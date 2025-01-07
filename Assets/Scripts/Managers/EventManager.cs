@@ -13,6 +13,14 @@ public class EventManager : MonoBehaviour
     private UnityEvent<EventParams> onCardDraw;
     private UnityEvent<EventParams> onCardDrawLate;
 
+    private UnityEvent<EventParams> onCardPlayEarly;
+    private UnityEvent<EventParams> onCardPlay;
+    private UnityEvent<EventParams> onCardPlayLate;
+
+    private UnityEvent<EventParams> onCardDiscardEarly;
+    private UnityEvent<EventParams> onCardDiscard;
+    private UnityEvent<EventParams> onCardDiscardLate;
+
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -20,6 +28,14 @@ public class EventManager : MonoBehaviour
         onCardDrawEarly = new UnityEvent<EventParams>();
         onCardDraw = new UnityEvent<EventParams>();
         onCardDrawLate = new UnityEvent<EventParams>();
+
+        onCardPlayEarly = new UnityEvent<EventParams>();
+        onCardPlay = new UnityEvent<EventParams>();
+        onCardPlayLate = new UnityEvent<EventParams>();
+
+        onCardDiscardEarly = new UnityEvent<EventParams>();
+        onCardDiscard = new UnityEvent<EventParams>();
+        onCardDiscardLate = new UnityEvent<EventParams>();
     }
 
     /// <summary>
@@ -43,6 +59,34 @@ public class EventManager : MonoBehaviour
                         break;
                     case 2:
                         onCardDrawLate.AddListener(action);
+                        break;
+                }
+                break;
+            case Events.onCardPlay:
+                switch (eventPriority)
+                {
+                    case 0:
+                        onCardPlayEarly.AddListener(action);
+                        break;
+                    case 1:
+                        onCardPlay.AddListener(action);
+                        break;
+                    case 2:
+                        onCardPlayLate.AddListener(action);
+                        break;
+                }
+                break;
+            case Events.onCardDiscard:
+                switch (eventPriority)
+                {
+                    case 0:
+                        onCardDiscardEarly.AddListener(action);
+                        break;
+                    case 1:
+                        onCardDiscard.AddListener(action);
+                        break;
+                    case 2:
+                        onCardDiscardLate.AddListener(action);
                         break;
                 }
                 break;
@@ -73,6 +117,35 @@ public class EventManager : MonoBehaviour
                         break;
                 }
                 break;
+            case Events.onCardPlay:
+                switch (eventPriority)
+                {
+                    case 0:
+                        onCardPlayEarly.RemoveListener(action);
+                        break;
+                    case 1:
+                        onCardPlay.RemoveListener(action);
+                        break;
+                    case 2:
+                        onCardPlayLate.RemoveListener(action);
+                        break;
+                }
+                break;
+            case Events.onCardDiscard:
+                switch (eventPriority)
+                {
+                    case 0:
+                        onCardDiscardEarly.RemoveListener(action);
+                        break;
+                    case 1:
+                        onCardDiscard.RemoveListener(action);
+                        break;
+                    case 2:
+                        onCardDiscardLate.RemoveListener(action);
+                        break;
+                }
+                break;
+
         }
     }
 
@@ -90,7 +163,17 @@ public class EventManager : MonoBehaviour
                 onCardDraw.Invoke(param);
                 onCardDrawLate.Invoke(param);
                 break;
-            
+            case Events.onCardPlay:
+                onCardPlayEarly.Invoke(param);
+                onCardPlay.Invoke(param);
+                onCardPlayLate.Invoke(param);
+                break;
+            case Events.onCardDiscard:
+                onCardDiscardEarly.Invoke(param);
+                onCardDiscard.Invoke(param);
+                onCardDiscardLate.Invoke(param);
+                break;
+
         }
     }
 
@@ -101,7 +184,9 @@ public class EventManager : MonoBehaviour
 /// </summary>
 public enum Events
 {
-    onCardDraw
+    onCardDraw,
+    onCardPlay,
+    onCardDiscard
 }
 
 //Struct for variables to be passed
