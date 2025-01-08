@@ -14,6 +14,16 @@ public class Deck : MonoBehaviour
         
     }
 
+    void shuffle()
+    {
+
+    }
+
+    void drawCard()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
