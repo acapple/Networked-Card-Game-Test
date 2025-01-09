@@ -24,6 +24,16 @@ public class Deck : MonoBehaviour
 
     }
 
+    void searchDeck()
+    {
+
+    }
+
+    void searchDiscard()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
