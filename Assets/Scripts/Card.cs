@@ -2,15 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Card 
+[System.Serializable]
+public class Card : MonoBehaviour
 {
+    [SerializeField]
+    internal string name = "Card";
+
     // Start is called before the first frame update
     void Initialize()
     {
         
     }
 
-    protected virtual void OnPlay()
+    internal virtual void OnPlay()
+    {
+        Debug.Log("Card played: "+name);
+    }
+
+    protected virtual void OnPlayAnyCard()
     {
         
     }
