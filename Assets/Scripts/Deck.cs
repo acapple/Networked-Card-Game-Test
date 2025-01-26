@@ -8,8 +8,8 @@ public class Deck : MonoBehaviour
     //List<string> cardsInDeck;
     [SerializeReference]
     List<Card> cardsInDeck;
-    List<int> deckOrder;
     int posInDeck = 0;
+    internal List<Card> discard;
 
 
     /// <summary>
@@ -17,22 +17,9 @@ public class Deck : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        deckOrder = new List<int>();
-        for (int i = 0; i < cardsInDeck.Count; i++) deckOrder.Add(i);
+        discard = new List<Card>();
     }
 
-
-    /// <summary>
-    /// Prints the deck order as integers
-    /// </summary>
-    void printDeckOrder()
-    {
-        if (!GameManager.gm.debugMessages) return;
-
-        string deckDebug = "Deck order before: ";
-        for (int i = 0; i < deckOrder.Count; i++) deckDebug += deckOrder[i] + ", ";
-        Debug.Log(deckDebug);
-    }
 
     /// <summary>
     /// Prints the deck values
@@ -42,34 +29,48 @@ public class Deck : MonoBehaviour
         if (!GameManager.gm.debugMessages) return;
 
         string deckDebug = "Deck order before: ";
-        for (int i = 0; i < deckOrder.Count; i++)
+        for (int i = 0; i < cardsInDeck.Count; i++)
         {
-            cardsInDeck[deckOrder[i]].OnPlay();
-            deckDebug += cardsInDeck[deckOrder[i]].name + ", ";
+            cardsInDeck[i].OnPlay();
+            deckDebug += cardsInDeck[i].name + ", ";
         }
         Debug.Log(deckDebug);
     }
 
 
     /// <summary>
+    /// shuffles discard pile into the deck
+    /// </summary>
+    internal void shuffleDiscardIntoDeck()
+    {
+        for (int i=0; i<discard.Count;)
+        {
+            cardsInDeck.Add(discard[i]);
+            discard.RemoveAt(i);
+        }
+        ShuffleDeck();
+    }
+
+
+    /// <summary>
     /// Shuffles the deck
     /// </summary>
-    internal void shuffle()
+    internal void ShuffleDeck()
     {
-        printDeckOrder();
+        printDeckValues();
 
-        int temp, cardSwapped;
-        for (int i=0; i<deckOrder.Count; i++)
+        Card temp;
+        int cardSwapped;
+        for (int i=0; i<cardsInDeck.Count; i++)
         {
-            temp = deckOrder[i];
-            cardSwapped = Random.Range(0, deckOrder.Count);
-            deckOrder[i] = deckOrder[cardSwapped];
-            deckOrder[cardSwapped] = temp;
+            cardSwapped = Random.Range(0, cardsInDeck.Count);
+            temp = cardsInDeck[i];
+            cardsInDeck[i] = cardsInDeck[cardSwapped];
+            cardsInDeck[cardSwapped] = temp;
         }
-
-        printDeckOrder();
         printDeckValues();
     }
+
 
     /// <summary>
     /// Draws the top card of the deck
@@ -77,40 +78,24 @@ public class Deck : MonoBehaviour
     /// <returns> the card being drawn </returns>
     internal Card drawCard()
     {
-        Card c = null;
         // If there are no cards to draw
-        if (posInDeck >= deckOrder.Count)
+        if (cardsInDeck.Count <= 0)
         {
-            shuffle();
-            posInDeck = 0;
-        }
-        //Look for the next card
-        for (int i=0; i<deckOrder.Count; i++)
-        {
-            if (posInDeck == deckOrder[i])
+            if (discard.Count <= 0)
             {
-                c = cardsInDeck[i];
-                posInDeck++;
-                break;
+                Debug.LogWarning("Deck and discard empty! No cards to draw!");
+                return null;
             }
-            //Safety net incase the card isn't in the deck for some reason, just look for the next card
-            if (i == deckOrder.Count-1)
+            else
             {
-                i = 0;
-                posInDeck++;
-                if (posInDeck >= deckOrder.Count)
-                {
-                    shuffle();
-                    posInDeck = 0;
-                }
+                ShuffleDeck();
             }
         }
-        if (c == null)
-        {
-            Debug.LogError("No cards found! card draw function broke!");
-        }
+        Card c = cardsInDeck[0];
+        cardsInDeck.RemoveAt(0);
         return c;
     }
+
 
     internal void searchDeck()
     {

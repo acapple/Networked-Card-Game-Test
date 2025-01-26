@@ -12,7 +12,7 @@ public class Player : Target
     // Start is called before the first frame update
     void Start()
     {
-        deck.shuffle();
+        deck.ShuffleDeck();
     }
 
     // Update is called once per frame
