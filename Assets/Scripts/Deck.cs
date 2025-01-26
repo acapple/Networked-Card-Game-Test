@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    [SerializeField]
-    List<string> cardsInDeck;
+    //[SerializeField]
+    //List<string> cardsInDeck;
     [SerializeReference]
-    List<Card> cardsInDeckProper;
+    List<Card> cardsInDeck;
     List<int> deckOrder;
+    int posInDeck = 0;
 
 
     /// <summary>
@@ -43,8 +44,8 @@ public class Deck : MonoBehaviour
         string deckDebug = "Deck order before: ";
         for (int i = 0; i < deckOrder.Count; i++)
         {
-            cardsInDeckProper[deckOrder[i]].OnPlay();
-            deckDebug += cardsInDeckProper[deckOrder[i]].name + ", ";
+            cardsInDeck[deckOrder[i]].OnPlay();
+            deckDebug += cardsInDeck[deckOrder[i]].name + ", ";
         }
         Debug.Log(deckDebug);
     }
@@ -70,9 +71,45 @@ public class Deck : MonoBehaviour
         printDeckValues();
     }
 
-    internal void drawCard()
+    /// <summary>
+    /// Draws the top card of the deck
+    /// </summary>
+    /// <returns> the card being drawn </returns>
+    internal Card drawCard()
     {
-
+        Card c = null;
+        // If there are no cards to draw
+        if (posInDeck >= deckOrder.Count)
+        {
+            shuffle();
+            posInDeck = 0;
+        }
+        //Look for the next card
+        for (int i=0; i<deckOrder.Count; i++)
+        {
+            if (posInDeck == deckOrder[i])
+            {
+                c = cardsInDeck[i];
+                posInDeck++;
+                break;
+            }
+            //Safety net incase the card isn't in the deck for some reason, just look for the next card
+            if (i == deckOrder.Count-1)
+            {
+                i = 0;
+                posInDeck++;
+                if (posInDeck >= deckOrder.Count)
+                {
+                    shuffle();
+                    posInDeck = 0;
+                }
+            }
+        }
+        if (c == null)
+        {
+            Debug.LogError("No cards found! card draw function broke!");
+        }
+        return c;
     }
 
     internal void searchDeck()
