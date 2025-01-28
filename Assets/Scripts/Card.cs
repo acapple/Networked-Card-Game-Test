@@ -6,7 +6,7 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     [SerializeField]
-    internal string name = "Card";
+    internal string title = "Card";
 
     // Start is called before the first frame update
     void Initialize()
@@ -16,7 +16,7 @@ public class Card : MonoBehaviour
 
     internal virtual void OnPlay()
     {
-        Debug.Log("Card played: "+name);
+        Debug.Log("Card played: "+title);
     }
 
     protected virtual void OnPlayAnyCard()

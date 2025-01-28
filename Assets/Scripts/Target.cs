@@ -1,10 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Target : MonoBehaviour
+public class Target : NetworkBehaviour
 {
-    int health;
+    internal NetworkVariable<float> health = new NetworkVariable<float>(0);
+
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (IsLocalPlayer)
+        {
+            health.OnValueChanged += HealthChanged;
+        }
+        if (IsServer)
+        {
+            health.Value = 1;
+        }
+    }
+
+    public void HealthChanged(float previous, float current)
+    {
+        Debug.Log("Health went from " + previous + " to " + current);
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +37,6 @@ public class Target : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

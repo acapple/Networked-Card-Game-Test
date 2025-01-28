@@ -32,7 +32,7 @@ public class Deck : MonoBehaviour
         for (int i = 0; i < cardsInDeck.Count; i++)
         {
             cardsInDeck[i].OnPlay();
-            deckDebug += cardsInDeck[i].name + ", ";
+            deckDebug += cardsInDeck[i].title + ", ";
         }
         Debug.Log(deckDebug);
     }

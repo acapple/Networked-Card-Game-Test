@@ -5,6 +5,9 @@ using Unity.Netcode;
 
 public class NetworkHud : MonoBehaviour
 {
+    private static Target localPlr;
+
+
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10, 10, 200, 200));
@@ -34,6 +37,7 @@ public class NetworkHud : MonoBehaviour
         }
     }
 
+
     static void StatusLabels()
     {
         string mode;
@@ -41,11 +45,23 @@ public class NetworkHud : MonoBehaviour
             mode = "Host";
         else if (NetworkManager.Singleton.IsServer)
             mode = "Server";
+        else if (NetworkManager.Singleton.IsConnectedClient)
+            mode = "Client - Connected";
         else
             mode = "Unknown";
         GUILayout.Label("Transport: " + NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetType().Name);
         GUILayout.Label("Mode: " + mode);
         if (NetworkManager.Singleton.IsServer)
             GUILayout.Label("# Connected: " + NetworkManager.Singleton.ConnectedClients.Count);
+
+        if (NetworkManager.Singleton.IsConnectedClient)
+        {
+            NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+            if (playerObject != null)
+            {
+                if (localPlr == null) localPlr = playerObject.GetComponent<Target>();
+                GUILayout.Label("Health: " + localPlr.health.Value);
+            }
+        }
     }
 }
