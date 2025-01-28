@@ -15,6 +15,7 @@ public class NetworkHud : MonoBehaviour
         {
             StatusLabels();
         }
+        GUILayout.EndArea();
     }
 
     static void StartButtons()
