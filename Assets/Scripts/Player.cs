@@ -31,12 +31,19 @@ public class Player : Target
         
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+    }
+
     internal void SortHand()
     {
+        Debug.Log("Sorting Hand");
+        if (!IsLocalPlayer || !IsOwner) return;
         int CardWidth = (int) Mathf.Floor(canvas.pixelRect.width / hand.Count);
         for (int i=0; i<hand.Count; i++)
         {
-            GameObject temp = Instantiate(cardHandSample, new Vector3(i * CardWidth, (int)canvas.pixelRect.height / 2, 0), Quaternion.identity, canvas.transform);
+            GameObject temp = Instantiate(cardHandSample, new Vector3(i * CardWidth + 0.5f * CardWidth, (int)canvas.pixelRect.height * 0.5f, 0), Quaternion.identity, canvas.transform);
             temp.GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1));
             temp.GetComponent<RectTransform>().sizeDelta = new Vector2(CardWidth, 50);
         }

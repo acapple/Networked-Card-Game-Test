@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class NetworkHud : MonoBehaviour
+public class NetworkHud : NetworkBehaviour
 {
-    private static Target localPlr;
+    internal static Target localPlr;
 
 
     private void OnGUI()
@@ -20,6 +20,7 @@ public class NetworkHud : MonoBehaviour
         }
         GUILayout.EndArea();
     }
+
 
     static void StartButtons()
     {
@@ -57,6 +58,7 @@ public class NetworkHud : MonoBehaviour
         if (NetworkManager.Singleton.IsConnectedClient)
         {
             NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+            //Debug.Log(playerObject.name);
             if (playerObject != null)
             {
                 if (localPlr == null) localPlr = playerObject.GetComponent<Target>();
