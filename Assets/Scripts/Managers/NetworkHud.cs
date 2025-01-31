@@ -22,6 +22,17 @@ public class NetworkHud : NetworkBehaviour
     }
 
 
+    private void Start()
+    {
+        
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+    }
+
+
     static void StartButtons()
     {
         if (GUILayout.Button("Host"))
@@ -57,13 +68,17 @@ public class NetworkHud : NetworkBehaviour
 
         if (NetworkManager.Singleton.IsConnectedClient)
         {
-            NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
-            //Debug.Log(playerObject.name);
-            if (playerObject != null)
+
+            if (localPlr == null)
             {
-                if (localPlr == null) localPlr = playerObject.GetComponent<Target>();
-                GUILayout.Label("Health: " + localPlr.health.Value);
+                Debug.Log("Getting players");
+                NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+                if (playerObject != null)
+                {
+                    if (localPlr == null) localPlr = playerObject.GetComponent<Target>();
+                }
             }
+            GUILayout.Label("Health: " + localPlr.health.Value);
         }
     }
 }

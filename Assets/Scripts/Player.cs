@@ -31,14 +31,8 @@ public class Player : Target
         
     }
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-    }
-
     internal void SortHand()
     {
-        Debug.Log("Sorting Hand");
         if (!IsLocalPlayer || !IsOwner) return;
         int CardWidth = (int) Mathf.Floor(canvas.pixelRect.width / hand.Count);
         for (int i=0; i<hand.Count; i++)
