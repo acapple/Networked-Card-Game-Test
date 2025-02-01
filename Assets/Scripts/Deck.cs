@@ -6,9 +6,12 @@ public class Deck : MonoBehaviour
 {
     //[SerializeField]
     //List<string> cardsInDeck;
+    [SerializeField]
+    GameObject cardSample;
+    [SerializeField]
+    Transform canvas;
     [SerializeReference]
-    List<Card> cardsInDeck;
-    int posInDeck = 0;
+    List<Card> cardsInDeck = new List<Card>();
     internal List<Card> discard;
 
 
@@ -18,6 +21,12 @@ public class Deck : MonoBehaviour
     void Awake()
     {
         discard = new List<Card>();
+
+        for (int i=0; i<10; i++)
+        {
+            GameObject c = Instantiate(cardSample, canvas);
+            cardsInDeck.Add(c.GetComponent<Card>());
+        }
     }
 
 
@@ -28,10 +37,10 @@ public class Deck : MonoBehaviour
     {
         if (!GameManager.gm.debugMessages) return;
 
-        string deckDebug = "Deck order before: ";
+        string deckDebug = "Deck order: ";
         for (int i = 0; i < cardsInDeck.Count; i++)
         {
-            cardsInDeck[i].OnPlay();
+            //cardsInDeck[i].ThisCardPlay();
             deckDebug += cardsInDeck[i].title + ", ";
         }
         Debug.Log(deckDebug);
@@ -92,6 +101,7 @@ public class Deck : MonoBehaviour
             }
         }
         Card c = cardsInDeck[0];
+        c.gameObject.SetActive(true);
         cardsInDeck.RemoveAt(0);
         return c;
     }

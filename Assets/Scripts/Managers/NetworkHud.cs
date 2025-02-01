@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class NetworkHud : NetworkBehaviour
 {
-    internal static Target localPlr;
+    internal static Player localPlr;
 
 
     private void OnGUI()
@@ -71,11 +71,11 @@ public class NetworkHud : NetworkBehaviour
 
             if (localPlr == null)
             {
-                Debug.Log("Getting players");
+                //Debug.Log("Getting players");
                 NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
                 if (playerObject != null)
                 {
-                    if (localPlr == null) localPlr = playerObject.GetComponent<Target>();
+                    if (localPlr == null) localPlr = playerObject.GetComponent<Player>();
                 }
             }
             GUILayout.Label("Health: " + localPlr.health.Value);

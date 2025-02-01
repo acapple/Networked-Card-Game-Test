@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2082987232
+  GlobalObjectIdHash: 2108013558
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -72,6 +72,8 @@ MonoBehaviour:
   deck: {fileID: 314060304468451164}
   cardHandSample: {fileID: 5821028111029674866, guid: 9d494377423913e4b8e2006f329c2c17, type: 3}
   canvas: {fileID: 6100063532722446077}
+  cardSpacing: 95
+  StartingHandSize: 5
 --- !u!1 &314060304468450979
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,17 +118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c65da03f02c4fc4f9100691b73a1be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsInDeck:
-  - {fileID: 3921680130739766792, guid: 9da9fb0ed407db84d8bb9522f80dc7aa, type: 3}
-  - {fileID: 3255525975348107064, guid: 041d10dc006fdfc4ca37ca63ec10cad7, type: 3}
-  - {fileID: 2147687986205948885, guid: b6f33258cb92711499fa4d40bc7cb0a7, type: 3}
-  - {fileID: 1474139716666645934, guid: 4a968865f0941f843a2b0b0de562f844, type: 3}
-  - {fileID: 4250954064544504614, guid: 3fb4fe045b7704c469cdfc75a6e3f742, type: 3}
-  - {fileID: 3999489345259012676, guid: f419f05d9068f0745803d12bef8ffa53, type: 3}
-  - {fileID: 3925865967884486343, guid: dcc42d5929dd96c4f9be8581f527ed86, type: 3}
-  - {fileID: 5891334273080031143, guid: 49f7a28eb5896474dbb0b59cc197fa53, type: 3}
-  - {fileID: 7962346478263224827, guid: 719de9cd182467547ac2b1b7eea1eb9f, type: 3}
-  - {fileID: 4753756937069520275, guid: 2fe161715ea9cb040b210629f52cabf3, type: 3}
+  cardSample: {fileID: 5821028111029674866, guid: 9d494377423913e4b8e2006f329c2c17, type: 3}
+  canvas: {fileID: 8434222694888808820}
+  cardsInDeck: []
 --- !u!1 &3856358934708472692
 GameObject:
   m_ObjectHideFlags: 0

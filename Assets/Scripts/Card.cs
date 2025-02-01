@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 [System.Serializable]
 public class Card : MonoBehaviour
@@ -14,23 +15,60 @@ public class Card : MonoBehaviour
         
     }
 
-    internal virtual void OnPlay()
+    public void CardPressed()
     {
-        Debug.Log("Card played: "+title);
+        Debug.Log("Button pressed.");
+        if (NetworkManager.Singleton.IsClient)
+        {
+            if (NetworkHud.localPlr != null)
+            {
+                List<Card> hand = NetworkHud.localPlr.hand;
+                for (int i=0; i<hand.Count; i++)
+                {
+                    if (hand[i] == this)
+                    {
+                        NetworkHud.localPlr.RequestCardPlayedServerRPC(i);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
-    protected virtual void OnPlayAnyCard()
+    internal virtual bool ThisCardPlay()
     {
-        
+        if (!NetworkManager.Singleton.IsServer) return false;
+        Debug.Log("[Server] played card: "+title);
+        return true;
     }
 
-    protected virtual void OnDraw()
+    protected virtual void AnyCardPlay()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
 
     }
 
-    protected virtual void OnDiscard()
+    protected virtual void ThisCardDraw()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
+
+    }
+
+    protected virtual void AnyCardDraw()
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+
+    }
+
+    protected virtual void AnyCardDiscard()
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+
+    }
+
+    protected virtual void ThisCardDiscard()
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
 
     }
 }
