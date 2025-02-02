@@ -22,7 +22,7 @@ public class Player : Target
     // Start is called before the first frame update
     void Start()
     {
-        if (!IsLocalPlayer || !IsOwner) return;
+        //if (!IsLocalPlayer || !IsOwner) return;
         Debug.Log(NetworkHud.getType() + "Creating a hand of cards");
         deck.ShuffleDeck();
         for (int i=0; i<StartingHandSize; i++)
@@ -35,7 +35,6 @@ public class Player : Target
 
     internal void AddCardToHand(Card c)
     {
-        if (!IsLocalPlayer || !IsOwner) return;
         Debug.Log(NetworkHud.getType() + "Adding a card to the hand");
 
         hand.Add(c);
@@ -43,7 +42,7 @@ public class Player : Target
         {
             hand[i].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
             int x = (int) Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
-            hand[i].transform.position = new Vector3(x, 0, 0);
+            hand[i].transform.position = new Vector3(x, 50, 0);
         }
     }
 
@@ -71,8 +70,22 @@ public class Player : Target
     internal void RequestCardPlayedServerRPC(int cardNum)
     {
 
-        Debug.Log(NetworkHud.getType() + "Got asked to play card numbered: " + cardNum + " named: " + hand[cardNum].title);
+        Debug.Log(NetworkHud.getType() + "Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
-        if (hand[cardNum].ThisCardPlay()) RemoveCardFromHandClientRPC("true", cardNum);
+        if (hand[cardNum].ThisCardPlay())
+        {
+            RemoveCardFromHandClientRPC("true", cardNum);
+            Debug.Log(NetworkHud.getType() + "Removing a card to the hand");
+            Card c = hand[cardNum];
+            hand.RemoveAt(cardNum);
+            c.GetComponent<Image>().enabled = false;
+            deck.discard.Add(c);
+            for (int i = 0; i < hand.Count; i++)
+            {
+                //hand[i].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
+                int x = (int)Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
+                hand[i].transform.position = new Vector3(x, 0, 0);
+            }
+        }
     }
 }

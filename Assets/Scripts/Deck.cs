@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
+using TMPro;
 
 public class Deck : NetworkBehaviour
 {
@@ -29,7 +30,9 @@ public class Deck : NetworkBehaviour
         {
             GameObject c = Instantiate(cardSample, canvas);
             cardsInDeck.Add(c.GetComponent<Card>());
+            cardsInDeck[i].title = "C#"+i;
         }
+        printDeckValues();
     }
 
 
@@ -107,6 +110,9 @@ public class Deck : NetworkBehaviour
         }
         Card c = cardsInDeck[0];
         c.GetComponent<Image>().enabled = true;
+        TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
+        Debug.Log(NetworkHud.getType() + (t== null));
+        t.text = c.title;
         cardsInDeck.RemoveAt(0);
         return c;
     }
