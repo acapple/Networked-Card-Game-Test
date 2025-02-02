@@ -23,6 +23,7 @@ public class Player : Target
     void Start()
     {
         if (!IsLocalPlayer || !IsOwner) return;
+        Debug.Log(NetworkHud.getType() + "Creating a hand of cards");
         deck.ShuffleDeck();
         for (int i=0; i<StartingHandSize; i++)
         {
@@ -35,6 +36,8 @@ public class Player : Target
     internal void AddCardToHand(Card c)
     {
         if (!IsLocalPlayer || !IsOwner) return;
+        Debug.Log(NetworkHud.getType() + "Adding a card to the hand");
+
         hand.Add(c);
         for (int i=0; i<hand.Count; i++)
         {
@@ -49,9 +52,11 @@ public class Player : Target
     internal void RemoveCardFromHandClientRPC(string result, int card)
     {
         if (!IsLocalPlayer || !IsOwner) return;
+
+        Debug.Log(NetworkHud.getType() + "Removing a card to the hand");
         Card c = hand[card];
         hand.RemoveAt(card);
-        c.gameObject.SetActive(false);
+        c.GetComponent<Image>().enabled = false;
         deck.discard.Add(c);
         for (int i = 0; i < hand.Count; i++)
         {
@@ -65,7 +70,9 @@ public class Player : Target
     [ServerRpc]
     internal void RequestCardPlayedServerRPC(int cardNum)
     {
-        Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
+
+        Debug.Log(NetworkHud.getType() + "Got asked to play card numbered: " + cardNum + " named: " + hand[cardNum].title);
+        //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
         if (hand[cardNum].ThisCardPlay()) RemoveCardFromHandClientRPC("true", cardNum);
     }
 }

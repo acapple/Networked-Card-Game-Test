@@ -49,6 +49,15 @@ public class NetworkHud : NetworkBehaviour
         }
     }
 
+    internal static string getType()
+    {
+        if (NetworkManager.Singleton.IsHost) return "[Host] ";
+        if (NetworkManager.Singleton.IsServer) return "[Server] ";
+        if (NetworkManager.Singleton.IsConnectedClient) return "[Client - Connected] ";
+        if (NetworkManager.Singleton.IsClient) return "[Client - Disconnected] ";
+        return "";
+    }
+
 
     static void StatusLabels()
     {

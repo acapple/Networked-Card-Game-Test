@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
+using UnityEngine.UI;
 
-public class Deck : MonoBehaviour
+public class Deck : NetworkBehaviour
 {
     //[SerializeField]
     //List<string> cardsInDeck;
@@ -20,6 +22,7 @@ public class Deck : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        Debug.Log(NetworkHud.getType() + "Deck being created! ");
         discard = new List<Card>();
 
         for (int i=0; i<10; i++)
@@ -43,7 +46,7 @@ public class Deck : MonoBehaviour
             //cardsInDeck[i].ThisCardPlay();
             deckDebug += cardsInDeck[i].title + ", ";
         }
-        Debug.Log(deckDebug);
+        Debug.Log(NetworkHud.getType() + deckDebug);
     }
 
 
@@ -52,6 +55,7 @@ public class Deck : MonoBehaviour
     /// </summary>
     internal void shuffleDiscardIntoDeck()
     {
+        Debug.Log(NetworkHud.getType() + "Discard is being shuffled into the deck");
         for (int i=0; i<discard.Count;)
         {
             cardsInDeck.Add(discard[i]);
@@ -67,7 +71,7 @@ public class Deck : MonoBehaviour
     internal void ShuffleDeck()
     {
         printDeckValues();
-
+        Debug.Log(NetworkHud.getType() + "Deck is being shuffled");
         Card temp;
         int cardSwapped;
         for (int i=0; i<cardsInDeck.Count; i++)
@@ -87,6 +91,7 @@ public class Deck : MonoBehaviour
     /// <returns> the card being drawn </returns>
     internal Card drawCard()
     {
+        Debug.Log(NetworkHud.getType() + "Drawing a card");
         // If there are no cards to draw
         if (cardsInDeck.Count <= 0)
         {
@@ -101,7 +106,7 @@ public class Deck : MonoBehaviour
             }
         }
         Card c = cardsInDeck[0];
-        c.gameObject.SetActive(true);
+        c.GetComponent<Image>().enabled = true;
         cardsInDeck.RemoveAt(0);
         return c;
     }

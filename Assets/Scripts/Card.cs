@@ -4,7 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 
 [System.Serializable]
-public class Card : MonoBehaviour
+public class Card : NetworkBehaviour
 {
     [SerializeField]
     internal string title = "Card";
@@ -17,7 +17,7 @@ public class Card : MonoBehaviour
 
     public void CardPressed()
     {
-        Debug.Log("Button pressed.");
+        Debug.Log(NetworkHud.getType() + "Card is pressed");
         if (NetworkManager.Singleton.IsClient)
         {
             if (NetworkHud.localPlr != null)
@@ -37,8 +37,8 @@ public class Card : MonoBehaviour
 
     internal virtual bool ThisCardPlay()
     {
+        Debug.Log(NetworkHud.getType() + "Trying to play card "+title);
         if (!NetworkManager.Singleton.IsServer) return false;
-        Debug.Log("[Server] played card: "+title);
         return true;
     }
 
