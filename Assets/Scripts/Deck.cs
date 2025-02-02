@@ -73,16 +73,40 @@ public class Deck : NetworkBehaviour
     /// </summary>
     internal void ShuffleDeck()
     {
+        if (!IsServer) return;
         printDeckValues();
         Debug.Log(NetworkHud.getType() + "Deck is being shuffled");
         Card temp;
         int cardSwapped;
+        int[] cardOrder = new int[cardsInDeck.Count];
+        int temp2;
+        for (int i = 0; i < cardOrder.Length; i++) cardOrder[i] = i;
+
         for (int i=0; i<cardsInDeck.Count; i++)
         {
             cardSwapped = Random.Range(0, cardsInDeck.Count);
             temp = cardsInDeck[i];
             cardsInDeck[i] = cardsInDeck[cardSwapped];
             cardsInDeck[cardSwapped] = temp;
+            temp2 = cardOrder[i];
+            cardOrder[i] = cardOrder[cardSwapped];
+            cardOrder[cardSwapped] = temp2;
+        }
+        printDeckValues();
+        shuffleDeckClientRPC(cardOrder);
+    }
+
+
+    [ClientRpc]
+    internal void shuffleDeckClientRPC(int[] order)
+    {
+        Debug.Log(NetworkHud.getType() + "Server called a deck shuffle");
+        printDeckValues();
+        List<Card> tempDeck = new List<Card>();
+        for (int i=0; i<cardsInDeck.Count; i++) tempDeck.Add(cardsInDeck[i]);
+        for (int i=0; i<order.Length; i++)
+        {
+            cardsInDeck[i] = tempDeck[order[i]];
         }
         printDeckValues();
     }
