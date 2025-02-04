@@ -9,6 +9,9 @@ public class NetworkHud : NetworkBehaviour
     internal static NetworkHud nh;
 
 
+    /// <summary>
+    /// Update to draw the UI at the top of the screen
+    /// </summary>
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10, 10, 200, 200));
@@ -27,12 +30,10 @@ public class NetworkHud : NetworkBehaviour
         nh = this;
     }
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-    }
 
-
+    /// <summary>
+    /// The buttons to select what type of instance you are running
+    /// </summary>
     static void StartButtons()
     {
         if (GUILayout.Button("Host"))
@@ -49,6 +50,11 @@ public class NetworkHud : NetworkBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Tool to get the type of instance you are running.
+    /// </summary>
+    /// <returns></returns>
     internal static string getType()
     {
         if (NetworkManager.Singleton.IsHost) return "[Host] ";
@@ -74,6 +80,7 @@ public class NetworkHud : NetworkBehaviour
         if (localPlr != null) s = "[Client " + localPlr.playerID.Value + "] " + msg;
         if (!NetworkManager.Singleton.IsServer) printServerRPC(s, warning);
     }
+    //The server part of it.
     [ServerRpc(RequireOwnership = false)]
     private void printServerRPC(string msg, bool warning)
     {
@@ -82,6 +89,9 @@ public class NetworkHud : NetworkBehaviour
     }
 
 
+    /// <summary>
+    /// The status labels at the top of the screen
+    /// </summary>
     static void StatusLabels()
     {
         string mode;
@@ -100,21 +110,16 @@ public class NetworkHud : NetworkBehaviour
 
         if (NetworkManager.Singleton.IsConnectedClient)
         {
-
-            if (localPlr == null)
-            {
-                NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
-                if (playerObject != null)
-                {
-                    if (localPlr == null) localPlr = playerObject.GetComponent<Player>();
-                }
-            }
+            attemptLocalPlayer();
             GUILayout.Label("Health: " + localPlr.health.Value);
         }
     }
 
 
-    void attemptLocalPlayer()
+    /// <summary>
+    /// checks to see if the local player is null, and tries to fill out the local player if they are null
+    /// </summary>
+    static void attemptLocalPlayer()
     {
         if (NetworkManager.Singleton.IsConnectedClient)
         {

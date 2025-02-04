@@ -21,7 +21,6 @@ public class Player : Target
     [SerializeField]
     int StartingHandSize = 5;
 
-
     public override void OnNetworkSpawn()
     {
         if (NetworkHud.localPlr == null && NetworkManager.IsConnectedClient) NetworkHud.localPlr = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();

@@ -7,8 +7,6 @@ using TMPro;
 
 public class Deck : NetworkBehaviour
 {
-    //[SerializeField]
-    //List<string> cardsInDeck;
     [SerializeField]
     GameObject cardSample;
     [SerializeField]
@@ -23,7 +21,7 @@ public class Deck : NetworkBehaviour
     /// </summary>
     void Awake()
     {
-        NetworkHud.nh.print("Deck being created! ");
+        //NetworkHud.nh.print("Deck being created! ");
         discard = new List<Card>();
 
         for (int i=0; i<10; i++)
@@ -69,7 +67,11 @@ public class Deck : NetworkBehaviour
 
 
     /// <summary>
-    /// The server shuffles a deck and then calls the client to shuffle the deck
+    /// The server shuffles a deck and then calls the client to shuffle the deck.
+    /// 
+    /// Shuffles the list of cards and an array of integers at the same time. 
+    /// List of integers is passed to the client to sync their deck so both decks are shuffled in the same way.
+    /// 
     /// </summary>
     internal void ShuffleDeck()
     {
@@ -81,7 +83,6 @@ public class Deck : NetworkBehaviour
         int[] cardOrder = new int[cardsInDeck.Count];
         int temp2;
         for (int i = 0; i < cardOrder.Length; i++) cardOrder[i] = i;
-
         for (int i=0; i<cardsInDeck.Count; i++)
         {
             cardSwapped = Random.Range(0, cardsInDeck.Count);
@@ -122,7 +123,7 @@ public class Deck : NetworkBehaviour
     /// <returns> the card being drawn </returns>
     internal Card drawCard()
     {
-        NetworkHud.nh.print("Drawing a card");
+        if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Drawing a card");
         // If there are no cards to draw
         if (cardsInDeck.Count <= 0)
         {
