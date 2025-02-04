@@ -76,7 +76,7 @@ public class Deck : NetworkBehaviour
     internal void ShuffleDeck()
     {
         if (!IsServer) return;
-        printDeckValues();
+        //printDeckValues();
         NetworkHud.nh.print("Deck is being shuffled");
         Card temp;
         int cardSwapped;
@@ -93,7 +93,7 @@ public class Deck : NetworkBehaviour
             cardOrder[i] = cardOrder[cardSwapped];
             cardOrder[cardSwapped] = temp2;
         }
-        printDeckValues();
+        if (GameManager.gm.repetitiveMessages) printDeckValues();
         shuffleDeckClientRPC(cardOrder);
     }
 
@@ -106,14 +106,14 @@ public class Deck : NetworkBehaviour
     internal void shuffleDeckClientRPC(int[] order)
     {
         NetworkHud.nh.print("Server called a deck shuffle");
-        printDeckValues();
+        //printDeckValues();
         List<Card> tempDeck = new List<Card>();
         for (int i=0; i<cardsInDeck.Count; i++) tempDeck.Add(cardsInDeck[i]);
         for (int i=0; i<order.Length; i++)
         {
             cardsInDeck[i] = tempDeck[order[i]];
         }
-        printDeckValues();
+        if (GameManager.gm.repetitiveMessages) printDeckValues();
     }
 
 
@@ -140,7 +140,6 @@ public class Deck : NetworkBehaviour
         Card c = cardsInDeck[0];
         c.GetComponent<Image>().enabled = true;
         TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
-        Debug.Log(NetworkHud.getType() + (t== null));
         t.text = c.title;
         cardsInDeck.RemoveAt(0);
         return c;

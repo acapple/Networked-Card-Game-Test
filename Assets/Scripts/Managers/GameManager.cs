@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     internal static GameManager gm;
     [SerializeField]
     internal bool debugMessages = false;
+    [SerializeField]
     internal bool repetitiveMessages = false;
 
     // Start is called before the first frame update

@@ -55,11 +55,11 @@ public class Player : Target
     /// <param name="c"> the card added to the players hand</param>
     internal void AddCardToHand(Card c)
     {
-        NetworkHud.nh.print("Adding a card to the hand");
+        if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Adding a card to the hand");
 
         if (c == null)
         {
-            NetworkHud.nh.print("The card to be added to the hand doesn't exist", true);
+            NetworkHud.nh.print("A card to be added to the hand doesn't exist", true);
         }
 
         hand.Add(c);
@@ -77,7 +77,7 @@ public class Player : Target
     {
         if (!IsLocalPlayer || !IsOwner) return;
 
-        NetworkHud.nh.print("Removing a card to the hand");
+        if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Removing a card to the hand");
         Card c = hand[card];
         hand.RemoveAt(card);
         c.GetComponent<Image>().enabled = false;
@@ -100,7 +100,7 @@ public class Player : Target
         if (hand[cardNum].ThisCardPlay())
         {
             RemoveCardFromHandClientRPC("true", cardNum);
-            NetworkHud.nh.print("Removing a card to the hand");
+            //NetworkHud.nh.print("Removing a card to the hand");
             Card c = hand[cardNum];
             hand.RemoveAt(cardNum);
             c.GetComponent<Image>().enabled = false;
