@@ -9,6 +9,8 @@ public class Player : Target
     [SerializeField]
     internal List<Card> hand;
     [SerializeField]
+    internal NetworkVariable<int> playerID;
+    [SerializeField]
     Deck deck;
     [SerializeField]
     GameObject cardHandSample;
@@ -19,23 +21,47 @@ public class Player : Target
     [SerializeField]
     int StartingHandSize = 5;
 
-    // Start is called before the first frame update
+
+    public override void OnNetworkSpawn()
+    {
+        if (NetworkHud.localPlr == null && NetworkManager.IsConnectedClient) NetworkHud.localPlr = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();
+        if (IsServer) playerID.Value = Random.Range(0, System.Int32.MaxValue);
+        base.OnNetworkSpawn();
+    }
+
     void Start()
     {
-        //if (!IsLocalPlayer || !IsOwner) return;
-        Debug.Log(NetworkHud.getType() + "Creating a hand of cards");
-        deck.ShuffleDeck();
-        for (int i=0; i<StartingHandSize; i++)
-        {
-            AddCardToHand(deck.drawCard());
-        }
-        //SortHand();
+        if (IsServer) playerID = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        drawHandOfCards();
     }
 
 
+    /// <summary>
+    /// Draws a hand of cards equal to the starting hand size
+    /// </summary>
+    void drawHandOfCards()
+    {
+        NetworkHud.nh.print("Creating a hand of cards");
+        deck.ShuffleDeck();
+        for (int i = 0; i < StartingHandSize; i++)
+        {
+            AddCardToHand(deck.drawCard());
+        }
+    }
+
+
+    /// <summary>
+    /// Adds a card to the player's hand
+    /// </summary>
+    /// <param name="c"> the card added to the players hand</param>
     internal void AddCardToHand(Card c)
     {
-        Debug.Log(NetworkHud.getType() + "Adding a card to the hand");
+        NetworkHud.nh.print("Adding a card to the hand");
+
+        if (c == null)
+        {
+            NetworkHud.nh.print("The card to be added to the hand doesn't exist", true);
+        }
 
         hand.Add(c);
         for (int i=0; i<hand.Count; i++)
@@ -52,7 +78,7 @@ public class Player : Target
     {
         if (!IsLocalPlayer || !IsOwner) return;
 
-        Debug.Log(NetworkHud.getType() + "Removing a card to the hand");
+        NetworkHud.nh.print("Removing a card to the hand");
         Card c = hand[card];
         hand.RemoveAt(card);
         c.GetComponent<Image>().enabled = false;
@@ -70,12 +96,12 @@ public class Player : Target
     internal void RequestCardPlayedServerRPC(int cardNum)
     {
 
-        Debug.Log(NetworkHud.getType() + "Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
+        NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
         if (hand[cardNum].ThisCardPlay())
         {
             RemoveCardFromHandClientRPC("true", cardNum);
-            Debug.Log(NetworkHud.getType() + "Removing a card to the hand");
+            NetworkHud.nh.print("Removing a card to the hand");
             Card c = hand[cardNum];
             hand.RemoveAt(cardNum);
             c.GetComponent<Image>().enabled = false;

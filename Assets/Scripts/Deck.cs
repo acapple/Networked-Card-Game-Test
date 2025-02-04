@@ -23,7 +23,7 @@ public class Deck : NetworkBehaviour
     /// </summary>
     void Awake()
     {
-        Debug.Log(NetworkHud.getType() + "Deck being created! ");
+        NetworkHud.nh.print("Deck being created! ");
         discard = new List<Card>();
 
         for (int i=0; i<10; i++)
@@ -49,7 +49,7 @@ public class Deck : NetworkBehaviour
             //cardsInDeck[i].ThisCardPlay();
             deckDebug += cardsInDeck[i].title + ", ";
         }
-        Debug.Log(NetworkHud.getType() + deckDebug);
+        NetworkHud.nh.print(deckDebug);
     }
 
 
@@ -58,7 +58,7 @@ public class Deck : NetworkBehaviour
     /// </summary>
     internal void shuffleDiscardIntoDeck()
     {
-        Debug.Log(NetworkHud.getType() + "Discard is being shuffled into the deck");
+        NetworkHud.nh.print("Discard is being shuffled into the deck");
         for (int i=0; i<discard.Count;)
         {
             cardsInDeck.Add(discard[i]);
@@ -69,13 +69,13 @@ public class Deck : NetworkBehaviour
 
 
     /// <summary>
-    /// Shuffles the deck
+    /// The server shuffles a deck and then calls the client to shuffle the deck
     /// </summary>
     internal void ShuffleDeck()
     {
         if (!IsServer) return;
         printDeckValues();
-        Debug.Log(NetworkHud.getType() + "Deck is being shuffled");
+        NetworkHud.nh.print("Deck is being shuffled");
         Card temp;
         int cardSwapped;
         int[] cardOrder = new int[cardsInDeck.Count];
@@ -97,10 +97,14 @@ public class Deck : NetworkBehaviour
     }
 
 
+    /// <summary>
+    /// The server tells the client the order of the cards (Used for shuffling the deck)
+    /// </summary>
+    /// <param name="order"></param>
     [ClientRpc]
     internal void shuffleDeckClientRPC(int[] order)
     {
-        Debug.Log(NetworkHud.getType() + "Server called a deck shuffle");
+        NetworkHud.nh.print("Server called a deck shuffle");
         printDeckValues();
         List<Card> tempDeck = new List<Card>();
         for (int i=0; i<cardsInDeck.Count; i++) tempDeck.Add(cardsInDeck[i]);
@@ -118,13 +122,13 @@ public class Deck : NetworkBehaviour
     /// <returns> the card being drawn </returns>
     internal Card drawCard()
     {
-        Debug.Log(NetworkHud.getType() + "Drawing a card");
+        NetworkHud.nh.print("Drawing a card");
         // If there are no cards to draw
         if (cardsInDeck.Count <= 0)
         {
             if (discard.Count <= 0)
             {
-                Debug.LogWarning("Deck and discard empty! No cards to draw!");
+                NetworkHud.nh.print("Deck and discard empty! No cards to draw!", true);
                 return null;
             }
             else

@@ -17,7 +17,7 @@ public class Card : NetworkBehaviour
 
     public void CardPressed()
     {
-        Debug.Log(NetworkHud.getType() + "Card is pressed");
+        NetworkHud.nh.print("Card is pressed");
         if (NetworkManager.Singleton.IsClient)
         {
             if (NetworkHud.localPlr != null)
@@ -37,7 +37,7 @@ public class Card : NetworkBehaviour
 
     internal virtual bool ThisCardPlay()
     {
-        Debug.Log(NetworkHud.getType() + "Trying to play card "+title);
+        NetworkHud.nh.print("Trying to play card " +title);
         if (!NetworkManager.Singleton.IsServer) return false;
         return true;
     }

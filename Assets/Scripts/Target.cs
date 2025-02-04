@@ -12,7 +12,7 @@ public class Target : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        Debug.Log(NetworkHud.getType() + "A target is spawned!");
+        NetworkHud.nh.print("A target is spawned!");
         if (IsLocalPlayer)
         {
             health.OnValueChanged += HealthChanged;
@@ -25,7 +25,7 @@ public class Target : NetworkBehaviour
 
     public void HealthChanged(float previous, float current)
     {
-        Debug.Log(NetworkHud.getType() +"Health went from " + previous + " to " + current);
+        NetworkHud.nh.print("Health went from " + previous + " to " + current);
     }
 
 

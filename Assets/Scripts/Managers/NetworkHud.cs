@@ -6,6 +6,7 @@ using Unity.Netcode;
 public class NetworkHud : NetworkBehaviour
 {
     internal static Player localPlr;
+    internal static NetworkHud nh;
 
 
     private void OnGUI()
@@ -21,10 +22,9 @@ public class NetworkHud : NetworkBehaviour
         GUILayout.EndArea();
     }
 
-
-    private void Start()
+    private void Awake()
     {
-        
+        nh = this;
     }
 
     public override void OnNetworkSpawn()
@@ -58,6 +58,29 @@ public class NetworkHud : NetworkBehaviour
         return "";
     }
 
+    
+    /// <summary>
+    /// Prints a given message to both the client and the server.
+    /// </summary>
+    /// <param name="msg">The message to be printed</param>
+    /// <param name="warning"> Is it logged as a warning? </param>
+    internal void print(string msg, bool warning = false)
+    {
+        if (!GameManager.gm.debugMessages) return;
+        string s = getType() + msg;
+        if (warning) Debug.LogWarning(s);
+        else Debug.Log(s);
+        attemptLocalPlayer();
+        if (localPlr != null) s = "[Client " + localPlr.playerID.Value + "] " + msg;
+        if (!NetworkManager.Singleton.IsServer) printServerRPC(s, warning);
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void printServerRPC(string msg, bool warning)
+    {
+        if (warning) Debug.LogWarning(msg);
+        else Debug.Log(msg);
+    }
+
 
     static void StatusLabels()
     {
@@ -80,7 +103,6 @@ public class NetworkHud : NetworkBehaviour
 
             if (localPlr == null)
             {
-                //Debug.Log("Getting players");
                 NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
                 if (playerObject != null)
                 {
@@ -88,6 +110,22 @@ public class NetworkHud : NetworkBehaviour
                 }
             }
             GUILayout.Label("Health: " + localPlr.health.Value);
+        }
+    }
+
+
+    void attemptLocalPlayer()
+    {
+        if (NetworkManager.Singleton.IsConnectedClient)
+        {
+            if (localPlr == null)
+            {
+                NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+                if (playerObject != null)
+                {
+                    if (localPlr == null) localPlr = playerObject.GetComponent<Player>();
+                }
+            }
         }
     }
 }
