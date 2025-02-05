@@ -14,6 +14,7 @@ public class Deck : NetworkBehaviour
     [SerializeReference]
     List<Card> cardsInDeck = new List<Card>();
     internal List<Card> discard;
+    
 
 
     /// <summary>
@@ -22,13 +23,17 @@ public class Deck : NetworkBehaviour
     void Awake()
     {
         //NetworkHud.nh.print("Deck being created! ");
+        Debug.Log("Crating dictionary");
         discard = new List<Card>();
+        if (Card.cards == null) Card.cards = new Dictionary<string, Card>();
 
         for (int i=0; i<10; i++)
         {
             GameObject c = Instantiate(cardSample, canvas);
             cardsInDeck.Add(c.GetComponent<Card>());
-            cardsInDeck[i].title = "C#"+i;
+            cardsInDeck[i].title = "C#"+i; 
+            NetworkHud.nh.print("Creating Cards");
+            if (!Card.cards.ContainsKey(cardsInDeck[i].title)) Card.cards.Add(cardsInDeck[i].title, cardsInDeck[i]);
         }
         printDeckValues();
     }
@@ -121,8 +126,9 @@ public class Deck : NetworkBehaviour
     /// Draws the top card of the deck
     /// </summary>
     /// <returns> the card being drawn </returns>
-    internal Card drawCard()
+    internal Card drawCard(int cardLocationInDeck = 0)
     {
+        if (!IsServer) return null;
         if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Drawing a card");
         // If there are no cards to draw
         if (cardsInDeck.Count <= 0)
@@ -137,12 +143,26 @@ public class Deck : NetworkBehaviour
                 ShuffleDeck();
             }
         }
-        Card c = cardsInDeck[0];
+        Card c = cardsInDeck[cardLocationInDeck];
         c.GetComponent<Image>().enabled = true;
         TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
         t.text = c.title;
-        cardsInDeck.RemoveAt(0);
+        cardsInDeck.RemoveAt(cardLocationInDeck);
+        removeCardFromDeckClientRpc(cardLocationInDeck);
         return c;
+    }
+
+
+    //Note: May have a race condition with shuffling. TBD
+    [ClientRpc]
+    internal void removeCardFromDeckClientRpc(int cardLocationInDeck)
+    {
+        if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Drawing a card");
+        Card c = cardsInDeck[cardLocationInDeck];
+        c.GetComponent<Image>().enabled = true;
+        TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
+        t.text = c.title;
+        cardsInDeck.RemoveAt(cardLocationInDeck);
     }
 
 

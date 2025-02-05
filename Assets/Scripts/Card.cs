@@ -9,11 +9,9 @@ public class Card : NetworkBehaviour
     [SerializeField]
     internal string title = "Card";
 
+    internal static Dictionary<string, Card> cards;
+
     // Start is called before the first frame update
-    void Initialize()
-    {
-        
-    }
 
     public void CardPressed()
     {

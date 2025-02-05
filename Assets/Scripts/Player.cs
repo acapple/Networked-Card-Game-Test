@@ -30,7 +30,11 @@ public class Player : Target
 
     void Start()
     {
-        if (IsServer) playerID = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        if (IsServer)
+        {
+            playerID = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+            
+        }
         drawHandOfCards();
     }
 
@@ -60,6 +64,7 @@ public class Player : Target
         if (c == null)
         {
             NetworkHud.nh.print("A card to be added to the hand doesn't exist", true);
+            return;
         }
 
         hand.Add(c);
@@ -67,6 +72,20 @@ public class Player : Target
         {
             hand[i].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
             int x = (int) Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
+            hand[i].transform.position = new Vector3(x, 50, 0);
+        }
+        return;
+    }
+    [ClientRpc]
+    internal void addCardToHandClientRPC(string cardKey)
+    {
+        Debug.Log("Using dictionary");
+        Card c = Card.cards[cardKey];
+        hand.Add(c);
+        for (int i = 0; i < hand.Count; i++)
+        {
+            hand[i].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
+            int x = (int)Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
             hand[i].transform.position = new Vector3(x, 50, 0);
         }
     }
