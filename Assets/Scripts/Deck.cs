@@ -14,6 +14,7 @@ public class Deck : NetworkBehaviour
     [SerializeReference]
     List<Card> cardsInDeck = new List<Card>();
     internal List<Card> discard;
+    internal Dictionary<int, Card> cardsFromThisDeck;
     
 
 
@@ -25,7 +26,7 @@ public class Deck : NetworkBehaviour
         //NetworkHud.nh.print("Deck being created! ");
         Debug.Log("Crating dictionary");
         discard = new List<Card>();
-        if (Card.cards == null) Card.cards = new Dictionary<string, Card>();
+        if (cardsFromThisDeck == null) cardsFromThisDeck = new Dictionary<int, Card>();
 
         for (int i=0; i<10; i++)
         {
@@ -33,7 +34,11 @@ public class Deck : NetworkBehaviour
             cardsInDeck.Add(c.GetComponent<Card>());
             cardsInDeck[i].title = "C#"+i; 
             NetworkHud.nh.print("Creating Cards");
-            if (!Card.cards.ContainsKey(cardsInDeck[i].title)) Card.cards.Add(cardsInDeck[i].title, cardsInDeck[i]);
+            if (!cardsFromThisDeck.ContainsKey(i))
+            {
+                cardsFromThisDeck.Add(i, cardsInDeck[i]);
+                cardsInDeck[i].keyInDeck = i;
+            }
         }
         printDeckValues();
     }

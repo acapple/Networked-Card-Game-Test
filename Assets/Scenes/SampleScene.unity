@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMessages: 1
+  repetitiveMessages: 0
 --- !u!4 &693973775
 Transform:
   m_ObjectHideFlags: 0

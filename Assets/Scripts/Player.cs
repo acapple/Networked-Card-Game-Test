@@ -59,6 +59,7 @@ public class Player : Target
     /// <param name="c"> the card added to the players hand</param>
     internal void AddCardToHand(Card c)
     {
+        if (!IsServer) return;
         if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Adding a card to the hand");
 
         if (c == null)
@@ -74,13 +75,14 @@ public class Player : Target
             int x = (int) Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
             hand[i].transform.position = new Vector3(x, 50, 0);
         }
+        addCardToHandClientRPC(c.keyInDeck);
         return;
     }
     [ClientRpc]
-    internal void addCardToHandClientRPC(string cardKey)
+    internal void addCardToHandClientRPC(int cardKey)
     {
         Debug.Log("Using dictionary");
-        Card c = Card.cards[cardKey];
+        Card c = deck.cardsFromThisDeck[cardKey];
         hand.Add(c);
         for (int i = 0; i < hand.Count; i++)
         {

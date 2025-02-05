@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-[System.Serializable]
+
 public class Card : NetworkBehaviour
 {
     [SerializeField]
     internal string title = "Card";
+    internal int keyInDeck = -1;
 
-    internal static Dictionary<string, Card> cards;
 
     // Start is called before the first frame update
 
