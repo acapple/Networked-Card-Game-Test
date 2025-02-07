@@ -11,8 +11,9 @@ public class Card : NetworkBehaviour
     internal int keyInDeck = -1;
 
 
-    // Start is called before the first frame update
-
+    /// <summary>
+    /// When a client clicks on a card
+    /// </summary>
     public void CardPressed()
     {
         NetworkHud.nh.print("Card is pressed");
@@ -33,6 +34,11 @@ public class Card : NetworkBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Play the card (if its the server)
+    /// </summary>
+    /// <returns></returns>
     internal virtual bool ThisCardPlay()
     {
         NetworkHud.nh.print("Trying to play card " +title);
