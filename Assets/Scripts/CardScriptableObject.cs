@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "CardScriptableObject", menuName = "ScriptableObjects/Card")]
 public class CardScriptableObject : ScriptableObject
 {
     public string title = "Not a card.";
-    public delegate void CardEffect(CardEffectVariable variables);
-    public CardEffect onPlayEffects;
+    //[System.Serializable]
+    //public delegate void CardEffect(CardEffectVariable variables);
+    public UnityEvent onPlayEffects;
 }
 
 public class CardEffectVariable
