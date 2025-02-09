@@ -9,6 +9,8 @@ public class Card : NetworkBehaviour
     [SerializeField]
     internal string title = "Card";
     internal int keyInDeck = -1;
+    internal Deck startingDeck;
+    internal CardScriptableObject[] cardEffects;
 
 
     /// <summary>
@@ -39,10 +41,21 @@ public class Card : NetworkBehaviour
     /// Play the card (if its the server)
     /// </summary>
     /// <returns></returns>
-    internal virtual bool ThisCardPlay()
+    internal virtual bool ThisCardPlay(int player)
     {
         NetworkHud.nh.print("Trying to play card " +title);
         if (!NetworkManager.Singleton.IsServer) return false;
+
+        for (int i=0; i<cardEffects.Length; i++)
+        {
+            switch (cardEffects[i].effect)
+            {
+                case "drawCard":
+                    //Server draws a player's card
+                    Player.playersInGame[player].AddCardToHand(startingDeck.drawCard());
+                    break;
+            }
+        }
         return true;
     }
 

@@ -38,6 +38,7 @@ public class Deck : NetworkBehaviour
             {
                 cardsFromThisDeck.Add(i, cardsInDeck[i]);
                 cardsInDeck[i].keyInDeck = i;
+                cardsInDeck[i].startingDeck = this;
             }
         }
         printDeckValues();

@@ -20,12 +20,31 @@ public class Player : Target
     float cardSpacing = 95;
     [SerializeField]
     int StartingHandSize = 5;
+    internal static Dictionary<int, Player> playersInGame;
 
     public override void OnNetworkSpawn()
     {
         if (NetworkHud.localPlr == null && NetworkManager.IsConnectedClient) NetworkHud.localPlr = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();
-        if (IsServer) playerID.Value = Random.Range(0, System.Int32.MaxValue);
+        if (IsServer)
+        {
+            if (playersInGame == null) playersInGame = new Dictionary<int, Player>();
+            do
+            {
+                playerID.Value = Random.Range(0, System.Int32.MaxValue);
+            } while (playersInGame.ContainsKey(playerID.Value));
+            playersInGame.Add(playerID.Value, this);
+            
+        }
         base.OnNetworkSpawn();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        if (IsServer)
+        {
+            playersInGame.Remove(playerID.Value);
+        }
     }
 
     void Start()
@@ -118,7 +137,7 @@ public class Player : Target
 
         NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
-        if (hand[cardNum].ThisCardPlay())
+        if (hand[cardNum].ThisCardPlay(playerID.Value))
         {
             RemoveCardFromHandClientRPC("true", cardNum);
             //NetworkHud.nh.print("Removing a card to the hand");
