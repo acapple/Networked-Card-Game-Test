@@ -10,6 +10,7 @@ public class Card : NetworkBehaviour
     internal string title = "Card";
     internal int keyInDeck = -1;
     internal Deck startingDeck;
+    [SerializeField]
     internal CardScriptableObject[] cardEffects;
 
 
@@ -45,12 +46,15 @@ public class Card : NetworkBehaviour
     {
         NetworkHud.nh.print("Trying to play card " +title);
         if (!NetworkManager.Singleton.IsServer) return false;
-
+        
         for (int i=0; i<cardEffects.Length; i++)
         {
+            NetworkHud.nh.print("Card effect going into play");
             switch (cardEffects[i].effect)
             {
                 case "drawCard":
+                    NetworkHud.nh.print("Drawing a card for playerid: "+player+", ");
+                    NetworkHud.nh.print("Player: " + Player.playersInGame[player] + ".");
                     //Server draws a player's card
                     Player.playersInGame[player].AddCardToHand(startingDeck.drawCard());
                     break;

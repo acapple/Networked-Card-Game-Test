@@ -12,7 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4565b1a7cb7cdb94eb8de84d5a5bdecf, type: 3}
   m_Name: testingCardScriptableObjects
   m_EditorClassIdentifier: 
-  title: Not a card.
-  onPlayEffects:
-    m_PersistentCalls:
-      m_Calls: []
+  power: 1
+  effect: drawCard

@@ -25,18 +25,14 @@ public class Player : Target
     public override void OnNetworkSpawn()
     {
         if (NetworkHud.localPlr == null && NetworkManager.IsConnectedClient) NetworkHud.localPlr = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();
-        if (IsServer)
-        {
-            if (playersInGame == null) playersInGame = new Dictionary<int, Player>();
-            do
-            {
-                playerID.Value = Random.Range(0, System.Int32.MaxValue);
-            } while (playersInGame.ContainsKey(playerID.Value));
-            playersInGame.Add(playerID.Value, this);
-            
-        }
         base.OnNetworkSpawn();
     }
+
+    internal void playerIdChanged(int old, int newValue)
+    {
+        NetworkHud.nh.print("Value changed from " + old + " to " + newValue);
+    }
+
 
     public override void OnNetworkDespawn()
     {
@@ -52,7 +48,18 @@ public class Player : Target
         if (IsServer)
         {
             playerID = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+            playerID.OnValueChanged += playerIdChanged;
+
+            if (playersInGame == null) playersInGame = new Dictionary<int, Player>();
+            do
+            {
+                playerID.Value = Random.Range(0, System.Int32.MaxValue);
+            } while (playersInGame.ContainsKey(playerID.Value));
+            playersInGame.Add(playerID.Value, this);
+
             
+
         }
         drawHandOfCards();
     }
@@ -137,6 +144,7 @@ public class Player : Target
 
         NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
+        NetworkHud.nh.print("Player ID during the request card played: " + playerID.Value + ", " + playersInGame.Values);
         if (hand[cardNum].ThisCardPlay(playerID.Value))
         {
             RemoveCardFromHandClientRPC("true", cardNum);
