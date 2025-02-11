@@ -95,9 +95,11 @@ public class Player : Target
         }
 
         hand.Add(c);
+        hand[hand.Count-1].GetComponent<Image>().enabled = true;
+        c.transform.GetChild(0).gameObject.SetActive(true);
+        hand[hand.Count - 1].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
         for (int i=0; i<hand.Count; i++)
         {
-            hand[i].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
             int x = (int) Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
             hand[i].transform.position = new Vector3(x, 50, 0);
         }
@@ -110,9 +112,11 @@ public class Player : Target
         Debug.Log("Using dictionary");
         Card c = deck.cardsFromThisDeck[cardKey];
         hand.Add(c);
+        hand[hand.Count - 1].GetComponent<Image>().enabled = true;
+        c.transform.GetChild(0).gameObject.SetActive(true);
+        hand[hand.Count - 1].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
         for (int i = 0; i < hand.Count; i++)
         {
-            hand[i].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
             int x = (int)Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
             hand[i].transform.position = new Vector3(x, 50, 0);
         }
@@ -128,12 +132,13 @@ public class Player : Target
         Card c = hand[card];
         hand.RemoveAt(card);
         c.GetComponent<Image>().enabled = false;
+        c.transform.GetChild(0).gameObject.SetActive(false);
         deck.discard.Add(c);
         for (int i = 0; i < hand.Count; i++)
         {
             //hand[i].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
             int x = (int)Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
-            hand[i].transform.position = new Vector3(x, 0, 0);
+            hand[i].transform.position = new Vector3(x, 50, 0);
         }
     }
 
@@ -152,12 +157,13 @@ public class Player : Target
             Card c = hand[cardNum];
             hand.RemoveAt(cardNum);
             c.GetComponent<Image>().enabled = false;
+            c.transform.GetChild(0).gameObject.SetActive(false);
             deck.discard.Add(c);
             for (int i = 0; i < hand.Count; i++)
             {
                 //hand[i].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
                 int x = (int)Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
-                hand[i].transform.position = new Vector3(x, 0, 0);
+                hand[i].transform.position = new Vector3(x, 50, 0);
             }
         }
     }

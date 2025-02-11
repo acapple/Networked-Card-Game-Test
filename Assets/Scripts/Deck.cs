@@ -146,7 +146,7 @@ public class Deck : NetworkBehaviour
             }
             else
             {
-                ShuffleDeck();
+                shuffleDiscardIntoDeck();
             }
         }
         Card c = cardsInDeck[cardLocationInDeck];

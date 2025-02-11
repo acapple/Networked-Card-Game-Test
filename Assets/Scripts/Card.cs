@@ -19,7 +19,7 @@ public class Card : NetworkBehaviour
     /// </summary>
     public void CardPressed()
     {
-        NetworkHud.nh.print("Card is pressed");
+        if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card is pressed");
         if (NetworkManager.Singleton.IsClient)
         {
             if (NetworkHud.localPlr != null)
@@ -49,12 +49,11 @@ public class Card : NetworkBehaviour
         
         for (int i=0; i<cardEffects.Length; i++)
         {
-            NetworkHud.nh.print("Card effect going into play");
+            if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card effect going into play");
             switch (cardEffects[i].effect)
             {
                 case "drawCard":
-                    NetworkHud.nh.print("Drawing a card for playerid: "+player+", ");
-                    NetworkHud.nh.print("Player: " + Player.playersInGame[player] + ".");
+                    NetworkHud.nh.print("Drawing a card for playerid: "+player);
                     //Server draws a player's card
                     Player.playersInGame[player].AddCardToHand(startingDeck.drawCard());
                     break;
