@@ -111,7 +111,7 @@ public class Deck : NetworkBehaviour
     /// <summary>
     /// The server tells the client the order of the cards (Used for shuffling the deck)
     /// </summary>
-    /// <param name="order"></param>
+    /// <param name="order"> The array of integers the server passes to the client for the order to shuffle the deck </param>
     [Rpc(SendTo.NotServer)]
     internal void shuffleDeckClientRPC(int[] order)
     {
@@ -157,8 +157,12 @@ public class Deck : NetworkBehaviour
         return c;
     }
 
-
-    //Note: May have a race condition with shuffling. TBD
+    /// <summary>
+    /// removes a card from the client deck
+    /// 
+    /// Note: May have a race condition with shuffling. TBD
+    /// </summary>
+    /// <param name="cardLocationInDeck"></param>
     [Rpc(SendTo.NotServer)]
     internal void removeCardFromDeckClientRpc(int cardLocationInDeck)
     {

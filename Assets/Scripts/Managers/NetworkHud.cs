@@ -117,6 +117,7 @@ public class NetworkHud : NetworkBehaviour
         if (NetworkManager.Singleton.IsConnectedClient)
         {
             attemptLocalPlayer();
+            GUILayout.Label("Player ID: " + localPlr.playerID);
             GUILayout.Label("Health: " + localPlr.health.Value);
         }
     }

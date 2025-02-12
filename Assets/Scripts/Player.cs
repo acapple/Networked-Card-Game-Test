@@ -22,13 +22,19 @@ public class Player : Target
     int StartingHandSize = 5;
     internal static Dictionary<int, Player> playersInGame;
 
+
+    /// <summary>
+    /// Adds this player to the network hud's local player
+    /// </summary>
     public override void OnNetworkSpawn()
     {
         if (NetworkHud.localPlr == null && NetworkManager.IsConnectedClient) NetworkHud.localPlr = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();
         base.OnNetworkSpawn();
     }
 
-
+    /// <summary>
+    /// Removes this player from the dictionary of local players
+    /// </summary>
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
@@ -38,6 +44,9 @@ public class Player : Target
         }
     }
 
+    /// <summary>
+    /// Initializes and adds this player to the server side dictionary of players in the game
+    /// </summary>
     void Start()
     {
         if (IsServer)
@@ -59,6 +68,7 @@ public class Player : Target
     [Rpc(SendTo.NotServer)]
     internal void updatePlayerIDClientRPC(int id)
     {
+        if (!IsLocalPlayer || !IsOwner) return;
         playerID = id;
     }
 
@@ -107,6 +117,7 @@ public class Player : Target
     [Rpc(SendTo.NotServer)]
     internal void addCardToHandClientRPC(int cardKey)
     {
+        if (!IsLocalPlayer || !IsOwner) return;
         Card c = deck.cardsFromThisDeck[cardKey];
         hand.Add(c);
         hand[hand.Count - 1].GetComponent<Image>().enabled = true;
