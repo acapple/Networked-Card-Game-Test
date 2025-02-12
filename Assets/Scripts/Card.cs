@@ -46,7 +46,12 @@ public class Card : NetworkBehaviour
     {
         NetworkHud.nh.print("Trying to play card " +title);
         if (!NetworkManager.Singleton.IsServer) return false;
-        
+        if (GameManager.gm.State != GameManager.gameState.PlayersTurn)
+        {
+            NetworkHud.nh.print("Card attempted to be played during enemy turn");
+            return false;
+        }
+
         for (int i=0; i<cardEffects.Length; i++)
         {
             if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card effect going into play");

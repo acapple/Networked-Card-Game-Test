@@ -28,11 +28,6 @@ public class Player : Target
         base.OnNetworkSpawn();
     }
 
-    internal void playerIdChanged(int old, int newValue)
-    {
-        NetworkHud.nh.print("Value changed from " + old + " to " + newValue);
-    }
-
 
     public override void OnNetworkDespawn()
     {
@@ -61,7 +56,7 @@ public class Player : Target
         drawHandOfCards();
     }
 
-    [ClientRpc]
+    [Rpc(SendTo.NotServer)]
     internal void updatePlayerIDClientRPC(int id)
     {
         playerID = id;
@@ -109,10 +104,9 @@ public class Player : Target
         addCardToHandClientRPC(c.keyInDeck);
         return;
     }
-    [ClientRpc]
+    [Rpc(SendTo.NotServer)]
     internal void addCardToHandClientRPC(int cardKey)
     {
-        Debug.Log("Using dictionary");
         Card c = deck.cardsFromThisDeck[cardKey];
         hand.Add(c);
         hand[hand.Count - 1].GetComponent<Image>().enabled = true;
@@ -126,7 +120,7 @@ public class Player : Target
     }
 
 
-    [ClientRpc]
+    [Rpc(SendTo.NotServer)]
     internal void RemoveCardFromHandClientRPC(string result, int card)
     {
         if (!IsLocalPlayer || !IsOwner) return;
@@ -146,7 +140,7 @@ public class Player : Target
     }
 
 
-    [ServerRpc]
+    [Rpc(SendTo.Server)]
     internal void RequestCardPlayedServerRPC(int cardNum)
     {
 

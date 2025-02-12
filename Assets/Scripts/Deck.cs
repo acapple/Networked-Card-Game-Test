@@ -112,7 +112,7 @@ public class Deck : NetworkBehaviour
     /// The server tells the client the order of the cards (Used for shuffling the deck)
     /// </summary>
     /// <param name="order"></param>
-    [ClientRpc]
+    [Rpc(SendTo.NotServer)]
     internal void shuffleDeckClientRPC(int[] order)
     {
         NetworkHud.nh.print("Server called a deck shuffle");
@@ -159,7 +159,7 @@ public class Deck : NetworkBehaviour
 
 
     //Note: May have a race condition with shuffling. TBD
-    [ClientRpc]
+    [Rpc(SendTo.NotServer)]
     internal void removeCardFromDeckClientRpc(int cardLocationInDeck)
     {
         if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Drawing a card");

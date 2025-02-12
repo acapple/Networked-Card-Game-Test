@@ -7,6 +7,8 @@ public class NetworkHud : NetworkBehaviour
 {
     internal static Player localPlr;
     internal static NetworkHud nh;
+    [SerializeField]
+    private GameObject gameManager;
 
 
     /// <summary>
@@ -28,6 +30,7 @@ public class NetworkHud : NetworkBehaviour
     private void Awake()
     {
         nh = this;
+        Instantiate(gameManager);
     }
 
 
@@ -106,7 +109,10 @@ public class NetworkHud : NetworkBehaviour
         GUILayout.Label("Transport: " + NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetType().Name);
         GUILayout.Label("Mode: " + mode);
         if (NetworkManager.Singleton.IsServer)
+        {
             GUILayout.Label("# Connected: " + NetworkManager.Singleton.ConnectedClients.Count);
+            if (GUILayout.Button("Start Turn Timer")) GameManager.gm.playersTurn();
+        }
 
         if (NetworkManager.Singleton.IsConnectedClient)
         {
