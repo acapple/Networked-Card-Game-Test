@@ -77,7 +77,7 @@ public class NetworkHud : NetworkBehaviour
         if (warning) Debug.LogWarning(s);
         else Debug.Log(s);
         attemptLocalPlayer();
-        if (localPlr != null) s = "[Client " + localPlr.playerID.Value + "] " + msg;
+        if (localPlr != null) s = "[Client " + localPlr.playerID + "] " + msg;
         if (!NetworkManager.Singleton.IsServer) printServerRPC(s, warning);
     }
     //The server part of it.
@@ -85,7 +85,7 @@ public class NetworkHud : NetworkBehaviour
     private void printServerRPC(string msg, bool warning)
     {
         if (warning) Debug.LogWarning(msg);
-        else Debug.Log(msg);
+        else Debug.Log(msg + ". Player ID: " + GameObject.FindObjectOfType<Player>().playerID);
     }
 
 

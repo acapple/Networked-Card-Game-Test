@@ -9,7 +9,7 @@ public class Player : Target
     [SerializeField]
     internal List<Card> hand;
     [SerializeField]
-    internal NetworkVariable<int> playerID;
+    internal int playerID;
     [SerializeField]
     Deck deck;
     [SerializeField]
@@ -39,7 +39,7 @@ public class Player : Target
         base.OnNetworkDespawn();
         if (IsServer)
         {
-            playersInGame.Remove(playerID.Value);
+            playersInGame.Remove(playerID);
         }
     }
 
@@ -47,21 +47,24 @@ public class Player : Target
     {
         if (IsServer)
         {
-            playerID = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-
-            playerID.OnValueChanged += playerIdChanged;
-
             if (playersInGame == null) playersInGame = new Dictionary<int, Player>();
             do
             {
-                playerID.Value = Random.Range(0, System.Int32.MaxValue);
-            } while (playersInGame.ContainsKey(playerID.Value));
-            playersInGame.Add(playerID.Value, this);
+                playerID = Random.Range(0, System.Int32.MaxValue);
+            } while (playersInGame.ContainsKey(playerID));
+            updatePlayerIDClientRPC(playerID);
+            playersInGame.Add(playerID, this);
 
             
 
         }
         drawHandOfCards();
+    }
+
+    [ClientRpc]
+    internal void updatePlayerIDClientRPC(int id)
+    {
+        playerID = id;
     }
 
 
@@ -149,8 +152,8 @@ public class Player : Target
 
         NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
-        NetworkHud.nh.print("Player ID during the request card played: " + playerID.Value + ", " + playersInGame.Values);
-        if (hand[cardNum].ThisCardPlay(playerID.Value))
+        NetworkHud.nh.print("Player ID during the request card played: " + playerID + ", " + playersInGame.Values);
+        if (hand[cardNum].ThisCardPlay(playerID))
         {
             RemoveCardFromHandClientRPC("true", cardNum);
             //NetworkHud.nh.print("Removing a card to the hand");

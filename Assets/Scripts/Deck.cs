@@ -24,7 +24,6 @@ public class Deck : NetworkBehaviour
     void Awake()
     {
         //NetworkHud.nh.print("Deck being created! ");
-        Debug.Log("Crating dictionary");
         discard = new List<Card>();
         if (cardsFromThisDeck == null) cardsFromThisDeck = new Dictionary<int, Card>();
 
@@ -32,8 +31,8 @@ public class Deck : NetworkBehaviour
         {
             GameObject c = Instantiate(cardSample, canvas);
             cardsInDeck.Add(c.GetComponent<Card>());
-            cardsInDeck[i].title = "C#"+i; 
-            NetworkHud.nh.print("Creating Cards");
+            cardsInDeck[i].title = "C#"+i;
+            if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Creating Cards");
             if (!cardsFromThisDeck.ContainsKey(i))
             {
                 cardsFromThisDeck.Add(i, cardsInDeck[i]);
