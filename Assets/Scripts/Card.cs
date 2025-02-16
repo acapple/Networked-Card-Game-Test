@@ -12,12 +12,14 @@ public class Card : NetworkBehaviour
     internal Deck startingDeck;
     [SerializeField]
     internal CardScriptableObject[] cardEffects;
+    private IEnumerator dragging;
+    internal Vector3 startPos;
 
 
     /// <summary>
     /// When a client clicks on a card
     /// </summary>
-    public void CardPressed()
+    public void CardReleased()
     {
         if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card is pressed");
         if (NetworkManager.Singleton.IsClient)
@@ -34,6 +36,30 @@ public class Card : NetworkBehaviour
                     }
                 }
             }
+        }
+    }
+
+    public void dragCard()
+    {
+        dragging = cardBeingDragged();
+        startPos = transform.position;
+        StartCoroutine(dragging);
+    }
+    public IEnumerator cardBeingDragged()
+    {
+        while(true)
+        {
+            transform.position = Input.mousePosition;
+            yield return null;
+        }
+    }
+    public void releaseDrag()
+    {
+        StopCoroutine(dragging);
+        int section = Terrain.terrain.getMapSection(transform.position);
+        if (section == -1)
+        {
+            transform.position = startPos;
         }
     }
 
