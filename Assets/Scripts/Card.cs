@@ -60,6 +60,10 @@ public class Card : NetworkBehaviour
         if (section == -1)
         {
             transform.position = startPos;
+        } else
+        {
+            transform.position = startPos;
+            CardReleased();
         }
     }
 
