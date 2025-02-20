@@ -21,6 +21,8 @@ public class Player : Target
     [SerializeField]
     int StartingHandSize = 5;
     internal static Dictionary<int, Player> playersInGame;
+    [SerializeField]
+    internal RawImage playerImage;
 
 
     /// <summary>
@@ -58,6 +60,8 @@ public class Player : Target
             } while (playersInGame.ContainsKey(playerID));
             updatePlayerIDClientRPC(playerID);
             playersInGame.Add(playerID, this);
+            playerImage.color = new Color(Random.value, Random.value, Random.value);
+
 
             
 
