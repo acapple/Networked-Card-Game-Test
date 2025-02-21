@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 3995213096092599564}
   - component: {fileID: -4777635806922402261}
   - component: {fileID: -5240889042669549319}
+  - component: {fileID: 6622332422937007127}
   m_Layer: 5
   m_Name: UI Cards
   m_TagString: Untagged
@@ -268,8 +269,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: -4777635806922402261}
-          m_TargetAssemblyTypeName: Card, Assembly-CSharp
+        - m_Target: {fileID: 6622332422937007127}
+          m_TargetAssemblyTypeName: Draggable, Assembly-CSharp
           m_MethodName: dragCard
           m_Mode: 1
           m_Arguments:
@@ -286,6 +287,18 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: -4777635806922402261}
           m_TargetAssemblyTypeName: Card, Assembly-CSharp
+          m_MethodName: CardReleased
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 6622332422937007127}
+          m_TargetAssemblyTypeName: Draggable, Assembly-CSharp
           m_MethodName: releaseDrag
           m_Mode: 1
           m_Arguments:
@@ -296,3 +309,15 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &6622332422937007127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5821028111029674866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d014f73d8fedba741b31e7f9a4599626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

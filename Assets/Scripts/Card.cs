@@ -12,8 +12,6 @@ public class Card : NetworkBehaviour
     internal Deck startingDeck;
     [SerializeField]
     internal CardScriptableObject[] cardEffects;
-    private IEnumerator dragging;
-    internal Vector3 startPos;
 
 
     /// <summary>
@@ -39,33 +37,7 @@ public class Card : NetworkBehaviour
         }
     }
 
-    public void dragCard()
-    {
-        dragging = cardBeingDragged();
-        startPos = transform.position;
-        StartCoroutine(dragging);
-    }
-    public IEnumerator cardBeingDragged()
-    {
-        while(true)
-        {
-            transform.position = Input.mousePosition;
-            yield return null;
-        }
-    }
-    public void releaseDrag()
-    {
-        StopCoroutine(dragging);
-        int section = Terrain.terrain.getMapSection(transform.position);
-        if (section == -1)
-        {
-            transform.position = startPos;
-        } else
-        {
-            transform.position = startPos;
-            CardReleased();
-        }
-    }
+    
 
 
     /// <summary>
