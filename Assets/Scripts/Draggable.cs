@@ -10,6 +10,12 @@ public class Draggable : MonoBehaviour
     private bool returning = true;
 
 
+    public int getMapSection()
+    {
+        return Terrain.terrain.getMapSection(transform.position);
+    }
+
+
     public void dragCard()
     {
         dragging = cardBeingDragged();
