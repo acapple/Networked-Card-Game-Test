@@ -78,6 +78,50 @@ public class Player : Target
 
 
     /// <summary>
+    /// Initial call of player being dragged to get the player to move sections
+    /// </summary>
+    public void movePlayer()
+    {
+        if (!IsLocalPlayer) return;
+        int moveto = Terrain.terrain.getMapSection(playerImage.transform.position);
+        if (moveto == -1)
+        {
+            NetworkHud.nh.print("Tried moving off the section");
+            return;
+        }
+        NetworkHud.nh.print("Moving to section " + moveto);
+        playerRequestMoveServerRPC(moveto);
+    }
+
+    [Rpc(SendTo.Server)]
+    public void playerRequestMoveServerRPC(int section)
+    {
+        if (GameManager.gm.State == GameManager.gameState.PlayersTurn)
+        {
+            movePlayerClientRPC(section);
+            double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
+            angle = angle * section + angle * 0.5f;
+            Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
+            NetworkHud.nh.print("moving to position: " + position);
+            playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * 125);
+        } else
+        {
+            NetworkHud.nh.print("Invalid move action. Is not player turn.");
+        }
+    }
+    
+    [Rpc(SendTo.NotServer)]
+    public void movePlayerClientRPC(int section)
+    {
+        double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
+        angle = angle * section + angle * 0.5f;
+        Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
+        NetworkHud.nh.print("moving to position: " + position);
+        playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * 125);
+    }
+
+
+    /// <summary>
     /// Draws a hand of cards equal to the starting hand size
     /// </summary>
     void drawHandOfCards()

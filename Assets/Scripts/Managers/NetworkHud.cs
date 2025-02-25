@@ -119,6 +119,8 @@ public class NetworkHud : NetworkBehaviour
             attemptLocalPlayer();
             GUILayout.Label("Player ID: " + localPlr.playerID);
             GUILayout.Label("Health: " + localPlr.health.Value);
+            GUILayout.Label("Player Section: "+Terrain.terrain.getMapSection(localPlr.playerImage.transform.position));
+            GUILayout.Label("Mouse Section: " + Terrain.terrain.getMapSection(Input.mousePosition));
         }
     }
 
