@@ -103,7 +103,7 @@ public class Player : Target
             angle = angle * section + angle * 0.5f;
             Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
             NetworkHud.nh.print("moving to position: " + position);
-            playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * 125);
+            playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
         } else
         {
             NetworkHud.nh.print("Invalid move action. Is not player turn.");
@@ -117,7 +117,7 @@ public class Player : Target
         angle = angle * section + angle * 0.5f;
         Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
         NetworkHud.nh.print("moving to position: " + position);
-        playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * 125);
+        playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
     }
 
 

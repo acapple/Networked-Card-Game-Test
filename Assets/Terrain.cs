@@ -22,12 +22,14 @@ public class Terrain : MonoBehaviour
 
     internal bool inColosseum(Vector2 pos)
     {
+        offSet = GetComponent<CircleCollider2D>().offset;
         return Vector2.Distance(transform.position + offSet, pos) < GetComponent<CircleCollider2D>().radius;
     }
 
     internal int getMapSection(Vector2 pos)
     {
         if (!inColosseum(pos)) return -1;
+        offSet = GetComponent<CircleCollider2D>().offset;
         float angle = Vector2.Angle(Vector2.right, new Vector2(pos.y - (transform.position.y + offSet.y), pos.x - (transform.position.x + offSet.x)));
         if (pos.x < transform.position.x + offSet.x) angle = 360 - angle;
         angle = angle / 360 * sections;
