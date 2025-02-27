@@ -12,12 +12,21 @@ public class Terrain : MonoBehaviour
     private void Awake()
     {
         terrain = this;
-        offSet = GetComponent<CircleCollider2D>().offset;
+        resize();
+    }
+
+    public void resize()
+    {
+        offSet = new Vector3(0, Screen.height * 0.16f);
+        GetComponent<CircleCollider2D>().offset = offSet;
+        int radius = (int) Mathf.Floor(Screen.height / 2.5f);
+        GetComponent<CircleCollider2D>().radius = radius;
     }
 
     public void mouseUp()
     {
-        NetworkHud.nh.print("Mouse in section: " + getMapSection(Input.mousePosition) + ", in circle: " + inColosseum(Input.mousePosition));
+        //NetworkHud.nh.print("Mouse in section: " + getMapSection(Input.mousePosition) + ", in circle: " + inColosseum(Input.mousePosition));
+        resize();
     }
 
     internal bool inColosseum(Vector2 pos)
