@@ -1,0 +1,100 @@
+//Me doing some planning. Some things may have the same name as other things in the project, I am just using these names because 
+//that's whats easiest for me to understand. as I wrap my head around how I want the cards to work.
+
+//Just me doing some forplanning on how the cards work.
+CardData : ScriptableObject {
+     string cardName;
+     CardEffect[] effects;
+}
+
+// A scriptable object, so I can make one effect of "You draw a card" and then just drag it in to all cards for cardeffects for draw 1 card as an example
+CardEffect : ScriptableObject {
+
+   target who;
+
+   effect what;
+   int amount;
+
+   range where;
+   [tooltip("(min,max,width) width only used for pick section, so you can pick a section 7 it gets the w sections next to it.")]
+   Vector3 distances;
+
+   duration when;
+   whenTriggers triggers;
+}
+
+
+
+
+//list of all the targets a card can target
+enum target {
+   none
+   self
+   oneAlly
+   allAllies
+   oneEnemy
+   allEnemies
+   everyone
+}
+
+
+//List of all the different effects that the cards have
+enum effect {
+   drawCard
+   dealDamage
+   heal
+   move
+   extraAction
+   boostCardDraw
+   boostDamage
+   boostHealing
+   boostMove
+}
+
+
+//List of the different ranges
+enum range {
+   self
+   rangePickSection       //Pick a section within the distance
+   rangeDeterminedSection //All sections of the map between two numbers
+}
+
+
+//List of all the different durations card effects have
+enum duration {
+   instant
+   ongoingTimed
+   ongoingEvent
+}
+
+// variables may not be able to be changed at a class level for this class, because it'd effect all cards of that card type
+abstract class whenTriggers {
+   void initiateTriggers();
+   void onTrigger(); // also use this to determine when to remove a trigger
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
