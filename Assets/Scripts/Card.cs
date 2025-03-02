@@ -11,7 +11,7 @@ public class Card : NetworkBehaviour
     internal int keyInDeck = -1;
     internal Deck startingDeck;
     [SerializeField]
-    internal CardScriptableObject[] cardEffects;
+    internal CardScriptableObject cardEffects;
 
 
     /// <summary>
@@ -54,12 +54,12 @@ public class Card : NetworkBehaviour
             return false;
         }
 
-        for (int i=0; i<cardEffects.Length; i++)
+        for (int i=0; i<cardEffects.effects.Length; i++)
         {
             if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card effect going into play");
-            switch (cardEffects[i].effect)
+            switch (cardEffects.effects[i].what)
             {
-                case "drawCard":
+                case cardEffectEnum.drawCard:
                     NetworkHud.nh.print("Drawing a card for playerid: "+player);
                     //Server draws a player's card
                     Player.playersInGame[player].AddCardToHand(startingDeck.drawCard());
