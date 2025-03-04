@@ -200,13 +200,13 @@ public class Player : Target
 
 
     [Rpc(SendTo.Server)]
-    internal void RequestCardPlayedServerRPC(int cardNum)
+    internal void RequestCardPlayedServerRPC(int cardNum, int section)
     {
 
         NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
         NetworkHud.nh.print("Player ID during the request card played: " + playerID + ", " + playersInGame.Values);
-        if (hand[cardNum].ThisCardPlay(playerID))
+        if (hand[cardNum].ThisCardPlay(playerID, section))
         {
             RemoveCardFromHandClientRPC("true", cardNum);
             //NetworkHud.nh.print("Removing a card to the hand");

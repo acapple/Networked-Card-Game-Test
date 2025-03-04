@@ -13,7 +13,7 @@ public class CardEffect : ScriptableObject
 
     public cardRangeEnum where;
     [Tooltip("(min,max,width) width only used for pick section, so you can pick a section 7 it gets the w sections next to it.")]
-    public Vector3 distances;
+    public Vector3Int distances;
 
     public cardDurationEnum when;
     //whenTriggers triggers;

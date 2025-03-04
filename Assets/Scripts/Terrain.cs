@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,5 +44,18 @@ public class Terrain : MonoBehaviour
         if (pos.x < transform.position.x + offSet.x) angle = 360 - angle;
         angle = angle / 360 * sections;
         return (int) Mathf.Floor(angle);
+    }
+
+    internal List<Target> getPlayersInSection(int i)
+    {
+        List<Target> targets = new List<Target>();
+        foreach (Player p in Player.playersInGame.Values)
+        {
+            if (i == getMapSection(p.transform.position))
+            {
+                targets.Add(p);
+            }
+        }
+        return targets;
     }
 }
