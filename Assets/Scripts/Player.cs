@@ -11,7 +11,7 @@ public class Player : Target
     [SerializeField]
     internal int playerID;
     [SerializeField]
-    Deck deck;
+    internal Deck deck;
     [SerializeField]
     GameObject cardHandSample;
     [SerializeField]

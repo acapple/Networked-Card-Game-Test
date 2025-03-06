@@ -133,9 +133,39 @@ public class Card : NetworkBehaviour
         {
             case cardEffectEnum.drawCard:
                 NetworkHud.nh.print("Drawing a card for playerid: " + player);
+                //For each target, if they're a player, they draw a card from their own deck equal to the effect ammount
+                for (int i=0; i<allTargetsOfCard.Count; i++)
+                {
+                    if (allTargetsOfCard[i] is Player) {
+                        for (int j=0; j<effect.amount; j++) 
+                            ((Player)allTargetsOfCard[i]).AddCardToHand(((Player)allTargetsOfCard[i]).deck.drawCard());
+                    }
+                }
                 //Server draws a player's card
-                Player.playersInGame[player].AddCardToHand(startingDeck.drawCard());
+                //Player.playersInGame[player].AddCardToHand(startingDeck.drawCard());
                 break;
+            case cardEffectEnum.dealDamage:
+                for (int i = 0; i < allTargetsOfCard.Count; i++)
+                {
+                    allTargetsOfCard[i].health.Value -= effect.amount;
+                }
+                break;
+            case cardEffectEnum.heal:
+                for (int i = 0; i < allTargetsOfCard.Count; i++)
+                {
+                    allTargetsOfCard[i].health.Value += effect.amount;
+                }
+                break;
+            case cardEffectEnum.move:
+                for (int i = 0; i < allTargetsOfCard.Count; i++)
+                {
+                    if (allTargetsOfCard[i] is Player)
+                    {
+                        ((Player)allTargetsOfCard[i]).playerRequestMoveServerRPC(section);
+                    }
+                }
+                break;
+
         }
     }
 }
