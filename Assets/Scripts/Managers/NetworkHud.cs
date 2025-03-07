@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 
 public class NetworkHud : NetworkBehaviour
 {
@@ -39,18 +40,21 @@ public class NetworkHud : NetworkBehaviour
     /// </summary>
     static void StartButtons()
     {
+        string ip = GUILayout.TextField("127.0.0.1"); 
         if (GUILayout.Button("Host"))
         {
             NetworkManager.Singleton.StartHost();
         }
         if (GUILayout.Button("Client"))
         {
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ip, (ushort)7777);
             NetworkManager.Singleton.StartClient();
         }
         if (GUILayout.Button("Server"))
         {
             NetworkManager.Singleton.StartServer();
         }
+        
     }
 
 
