@@ -11,7 +11,7 @@ public class Card : NetworkBehaviour
     internal int keyInDeck = -1;
     internal Deck startingDeck;
     [SerializeField]
-    internal CardScriptableObject cardEffects;
+    internal CardScriptableObject cardReference;
 
 
     /// <summary>
@@ -54,10 +54,11 @@ public class Card : NetworkBehaviour
             return false;
         }
 
-        for (int i=0; i<cardEffects.effects.Length; i++)
+        for (int i=0; i<cardReference.effects.Length; i++)
         {
             if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card effect going into play");
-            organizeCardEffect(cardEffects.effects[i], player, section);
+            NetworkHud.nh.print(""+cardReference.effects.Length);
+            organizeCardEffect(cardReference.effects[i], player, section);
         }
         return true;
     }
@@ -75,9 +76,11 @@ public class Card : NetworkBehaviour
         bool[] validSections = new bool[Terrain.terrain.numSections];
         for (int i = 0; i<validSections.Length; i++) validSections[i] = false;
         int playerPosition = Terrain.terrain.getMapSection(Player.playersInGame[player].transform.position);
+        NetworkHud.nh.print("Player pos: "+ playerPosition + ", " + validSections.Length);
         switch (effect.where)
         {
             case cardRangeEnum.self:
+                if (playerPosition == -1) return;
                 validSections[playerPosition] = true;
                 break;
             case cardRangeEnum.distanceDeterminedSelection:

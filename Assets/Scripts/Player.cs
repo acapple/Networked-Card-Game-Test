@@ -30,8 +30,24 @@ public class Player : Target
     /// </summary>
     public override void OnNetworkSpawn()
     {
-        if (NetworkHud.localPlr == null && NetworkManager.IsConnectedClient) NetworkHud.localPlr = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();
+        if (NetworkHud.localPlr == null && NetworkManager.IsConnectedClient) {
+
+            NetworkHud.localPlr = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();
+        }
         base.OnNetworkSpawn();
+        StartCoroutine(gameSetup());
+    }
+
+
+    /// <summary>
+    /// Any setup needed to be done to actually play the game.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator gameSetup()
+    {
+        yield return new WaitForSeconds(0.5f);
+        playerRequestMoveServerRPC(0, true);
+        drawHandOfCards();
     }
 
     /// <summary>
@@ -61,12 +77,8 @@ public class Player : Target
             updatePlayerIDClientRPC(playerID);
             playersInGame.Add(playerID, this);
             playerImage.color = new Color(Random.value, Random.value, Random.value);
-
-
-            
-
         }
-        drawHandOfCards();
+        
     }
 
     [Rpc(SendTo.NotServer)]
@@ -94,10 +106,11 @@ public class Player : Target
     }
 
     [Rpc(SendTo.Server)]
-    public void playerRequestMoveServerRPC(int section)
+    public void playerRequestMoveServerRPC(int section, bool moveOverride = false)
     {
-        if (GameManager.gm.State == GameManager.gameState.PlayersTurn)
+        if (GameManager.gm.State == GameManager.gameState.PlayersTurn || moveOverride)
         {
+            NetworkHud.nh.print("Moving to section " + section);
             movePlayerClientRPC(section);
             double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
             angle = angle * section + angle * 0.5f;

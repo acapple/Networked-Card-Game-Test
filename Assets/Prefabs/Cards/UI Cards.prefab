@@ -250,8 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: Card
-  cardEffects:
-  - {fileID: 11400000, guid: 993b9946d7d791e498e7950c894eba7c, type: 2}
+  cardReference: {fileID: 11400000, guid: e64464f262f96e0418e034d37eaf3ea3, type: 2}
 --- !u!114 &-5240889042669549319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,3 +320,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d014f73d8fedba741b31e7f9a4599626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  returning: 1
