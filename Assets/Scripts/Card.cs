@@ -57,7 +57,6 @@ public class Card : NetworkBehaviour
         for (int i=0; i<cardReference.effects.Length; i++)
         {
             if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card effect going into play");
-            NetworkHud.nh.print(""+cardReference.effects.Length);
             organizeCardEffect(cardReference.effects[i], player, section);
         }
         return true;
@@ -75,8 +74,7 @@ public class Card : NetworkBehaviour
         //Figure out what sections
         bool[] validSections = new bool[Terrain.terrain.numSections];
         for (int i = 0; i<validSections.Length; i++) validSections[i] = false;
-        int playerPosition = Terrain.terrain.getMapSection(Player.playersInGame[player].transform.position);
-        NetworkHud.nh.print("Player pos: "+ playerPosition + ", " + validSections.Length);
+        int playerPosition = Terrain.terrain.getMapSection(Player.playersInGame[player].playerImage.transform.position);
         switch (effect.where)
         {
             case cardRangeEnum.self:
