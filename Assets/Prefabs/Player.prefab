@@ -123,6 +123,7 @@ MonoBehaviour:
   cardSample: {fileID: 5821028111029674866, guid: 9d494377423913e4b8e2006f329c2c17, type: 3}
   canvas: {fileID: 8434222694888808820}
   cardsInDeck: []
+  startingDeck: {fileID: 11400000, guid: b0348aba91d1e7541b9dce77cfa50c75, type: 2}
 --- !u!1 &3856358934708472692
 GameObject:
   m_ObjectHideFlags: 0

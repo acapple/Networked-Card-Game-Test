@@ -15,6 +15,8 @@ public class Deck : NetworkBehaviour
     List<Card> cardsInDeck = new List<Card>();
     internal List<Card> discard;
     internal Dictionary<int, Card> cardsFromThisDeck;
+    [SerializeField]
+    private DeckScriptableObject startingDeck;
     
 
 
@@ -27,11 +29,12 @@ public class Deck : NetworkBehaviour
         discard = new List<Card>();
         if (cardsFromThisDeck == null) cardsFromThisDeck = new Dictionary<int, Card>();
 
-        for (int i=0; i<10; i++)
+        for (int i=0; i< startingDeck.startingCards.Length; i++)
         {
             GameObject c = Instantiate(cardSample, canvas);
             cardsInDeck.Add(c.GetComponent<Card>());
             cardsInDeck[i].title = "C#"+i;
+            cardsInDeck[i].cardReference = startingDeck.startingCards[i];
             if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Creating Cards");
             if (!cardsFromThisDeck.ContainsKey(i))
             {
