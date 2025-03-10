@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using System.Net;
+using System.Linq;
 
 public class NetworkHud : NetworkBehaviour
 {
@@ -10,6 +12,7 @@ public class NetworkHud : NetworkBehaviour
     internal static NetworkHud nh;
     [SerializeField]
     private GameObject gameManager;
+    private static string localIPAddress;
 
 
     /// <summary>
@@ -31,6 +34,7 @@ public class NetworkHud : NetworkBehaviour
     private void Awake()
     {
         nh = this;
+        localIPAddress = Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(f => f.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToString();
         Instantiate(gameManager);
     }
 
@@ -112,6 +116,7 @@ public class NetworkHud : NetworkBehaviour
             mode = "Unknown";
         GUILayout.Label("Transport: " + NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetType().Name);
         GUILayout.Label("Mode: " + mode);
+        GUILayout.Label("Local IP: " + localIPAddress);
         if (NetworkManager.Singleton.IsServer)
         {
             GUILayout.Label("# Connected: " + NetworkManager.Singleton.ConnectedClients.Count);
@@ -124,7 +129,7 @@ public class NetworkHud : NetworkBehaviour
             GUILayout.Label("Player ID: " + localPlr.playerID);
             GUILayout.Label("Health: " + localPlr.health.Value);
             GUILayout.Label("Player Section: "+Terrain.terrain.getMapSection(localPlr.playerImage.transform.position));
-            GUILayout.Label("Mouse Section: " + Terrain.terrain.getMapSection(Input.mousePosition));
+            //GUILayout.Label("Mouse Section: " + Terrain.terrain.getMapSection(Input.mousePosition));
         }
     }
 
