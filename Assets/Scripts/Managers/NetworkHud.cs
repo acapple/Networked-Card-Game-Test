@@ -13,6 +13,7 @@ public class NetworkHud : NetworkBehaviour
     [SerializeField]
     private GameObject gameManager;
     private static string localIPAddress;
+    private static string goalIPAddress = "127.0.0.1";
 
 
     /// <summary>
@@ -44,14 +45,14 @@ public class NetworkHud : NetworkBehaviour
     /// </summary>
     static void StartButtons()
     {
-        string ip = GUILayout.TextField("127.0.0.1"); 
+        goalIPAddress = GUILayout.TextField(goalIPAddress); 
         if (GUILayout.Button("Host"))
         {
             NetworkManager.Singleton.StartHost();
         }
         if (GUILayout.Button("Client"))
         {
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ip, (ushort)7777);
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(goalIPAddress, (ushort)7777);
             NetworkManager.Singleton.StartClient();
         }
         if (GUILayout.Button("Server"))
