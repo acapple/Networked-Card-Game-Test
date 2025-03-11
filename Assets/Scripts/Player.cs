@@ -105,6 +105,11 @@ public class Player : Target
         playerRequestMoveServerRPC(moveto);
     }
 
+    /// <summary>
+    /// Player requests to move. 
+    /// </summary>
+    /// <param name="section">Where to move to</param>
+    /// <param name="moveOverride">ignore not being player's turn</param>
     [Rpc(SendTo.Server)]
     public void playerRequestMoveServerRPC(int section, bool moveOverride = false)
     {
@@ -123,6 +128,10 @@ public class Player : Target
         }
     }
     
+    /// <summary>
+    /// Server tells client where to move the player to
+    /// </summary>
+    /// <param name="section">where to go</param>
     [Rpc(SendTo.NotServer)]
     public void movePlayerClientRPC(int section)
     {

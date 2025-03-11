@@ -25,10 +25,14 @@ public class Deck : NetworkBehaviour
     /// </summary>
     void Awake()
     {
+        //Initialize lists
         //NetworkHud.nh.print("Deck being created! ");
         discard = new List<Card>();
         if (cardsFromThisDeck == null) cardsFromThisDeck = new Dictionary<int, Card>();
 
+        //Create all cards & populate deck
+        //  TODO: Separate card from card scriptable object. Card should only exist when a card needs a
+        //  physical representation (inhand), not all the time (as is the case rn)
         for (int i=0; i< startingDeck.startingCards.Length; i++)
         {
             GameObject c = Instantiate(cardSample, canvas);
@@ -65,10 +69,11 @@ public class Deck : NetworkBehaviour
 
 
     /// <summary>
-    /// shuffles discard pile into the deck
+    /// [Server Only] shuffles discard pile into the deck
     /// </summary>
     internal void shuffleDiscardIntoDeck()
     {
+        if (!IsServer) return;
         NetworkHud.nh.print("Discard is being shuffled into the deck");
         for (int i=0; i<discard.Count;)
         {
@@ -80,6 +85,7 @@ public class Deck : NetworkBehaviour
 
 
     /// <summary>
+    /// [Server Only]
     /// The server shuffles a deck and then calls the client to shuffle the deck.
     /// 
     /// Shuffles the list of cards and an array of integers at the same time. 
@@ -131,6 +137,7 @@ public class Deck : NetworkBehaviour
 
 
     /// <summary>
+    /// [Server Only]
     /// Draws the top card of the deck
     /// </summary>
     /// <returns> the card being drawn </returns>
@@ -186,11 +193,5 @@ public class Deck : NetworkBehaviour
     internal void searchDiscard()
     {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

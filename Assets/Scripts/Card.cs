@@ -4,6 +4,11 @@ using UnityEngine;
 using Unity.Netcode;
 
 
+/// <summary>
+/// This class contains the code needed to execute the cards. 
+/// 
+/// TODO: Separate it so it only exists when a certain card is in the player's hand. Cards that aren't should be just a cardReference
+/// </summary>
 public class Card : NetworkBehaviour
 {
     [SerializeField]
@@ -15,7 +20,7 @@ public class Card : NetworkBehaviour
 
 
     /// <summary>
-    /// When a client clicks on a card
+    /// [Client Only] When a client clicks on a card
     /// </summary>
     public void CardReleased()
     {
@@ -37,11 +42,11 @@ public class Card : NetworkBehaviour
         }
     }
 
-    
-
 
     /// <summary>
-    /// Play the card (if its the server)
+    /// [Server Only] Play the card (if its the server)
+    /// 
+    /// TODO: Add more checks to make sure card can be played here BEFORE starting to put effects into play
     /// </summary>
     /// <returns></returns>
     internal virtual bool ThisCardPlay(int player, int section)
@@ -64,13 +69,20 @@ public class Card : NetworkBehaviour
 
 
     /// <summary>
-    /// Decompile the card's effect
+    /// [Server Only] Decompile the card's effect, in the order where, who, what. 
+    /// 
+    /// TODO: 
+    ///     Add Boost effects; 
+    ///     after enemies implemented, add enemy to who; 
+    ///     add extra action after implementing action limit
+    ///     add missing cases as I think of them; 
     /// </summary>
     /// <param name="effect">The effect to be decompiled</param>
     /// <param name="player">the player playing the card</param>
     /// <param name="section">the section that card is played in</param>
     private void organizeCardEffect(CardEffect effect, int player, int section)
     {
+        if (!NetworkManager.Singleton.IsServer) return;
         //Figure out what sections
         bool[] validSections = new bool[Terrain.terrain.numSections];
         for (int i = 0; i<validSections.Length; i++) validSections[i] = false;
