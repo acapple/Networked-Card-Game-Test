@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Unity.Netcode;
 using TMPro;
-
+using System.Linq;
 
 /// <summary>
 /// Manager running the game
@@ -20,6 +20,8 @@ public class GameManager : NetworkBehaviour
     TMP_Text timer;
     [SerializeField]
     int playerTurnTime = 10;
+    [SerializeField]
+    int numberOfActions = 1;
     public enum gameState { notInGame, PlayersTurn, EnemyTurn }
 
     private gameState state = gameState.notInGame;
@@ -40,6 +42,11 @@ public class GameManager : NetworkBehaviour
         if (!NetworkManager.Singleton.IsServer) return;
         NetworkHud.nh.print("Timer called!");
         double startingTime = NetworkManager.Singleton.ServerTime.Time;
+        for (int i =0; i< Player.playersInGame.Count; i++)
+        {
+            Player.playersInGame.ElementAt(i).Value.actions.x = Player.playersInGame.ElementAt(i).Value.actions.y;
+            Player.playersInGame.ElementAt(i).Value.actions.y = numberOfActions;
+        }
         startPlayerTurnClientRPC(startingTime);
         StartCoroutine(playerTurnTimer(startingTime));
     }
@@ -70,6 +77,16 @@ public class GameManager : NetworkBehaviour
         }
         timer.text = "" + playerTurnTime;
         yield return new WaitForSeconds(1);
+        playerTurnOver();
+    }
+
+    /// <summary>
+    /// Function to deal with the end of the player's turn
+    /// 
+    /// TODO: for every action remaining, plus a variable int, draw a card
+    /// </summary>
+    internal void playerTurnOver()
+    {
         state = gameState.EnemyTurn;
         timer.text = "";
     }

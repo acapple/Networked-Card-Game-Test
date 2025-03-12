@@ -58,7 +58,12 @@ public class Card : NetworkBehaviour
             NetworkHud.nh.print("Card attempted to be played during enemy turn");
             return false;
         }
-
+        if (Player.playersInGame[player].actions.x <= 0)
+        {
+            NetworkHud.nh.print("Card attempted to be played, but the player is out of actions");
+            return false;
+        }
+        Player.playersInGame[player].actions.x--;
         for (int i=0; i<cardReference.effects.Length; i++)
         {
             if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card effect going into play");
@@ -178,7 +183,15 @@ public class Card : NetworkBehaviour
                     }
                 }
                 break;
-
+            case cardEffectEnum.extraAction:
+                for (int i = 0; i < allTargetsOfCard.Count; i++)
+                {
+                    if (allTargetsOfCard[i] is Player)
+                    {
+                        ((Player)allTargetsOfCard[i]).actions.y += effect.amount;
+                    }
+                }
+                break;
         }
     }
 }

@@ -23,6 +23,9 @@ public class Player : Target
     internal static Dictionary<int, Player> playersInGame;
     [SerializeField]
     internal RawImage playerImage;
+    [SerializeField]
+    [Tooltip("(Number of actions remaining this turn, number of actions next turn)")]
+    internal Vector2 actions; 
 
 
     /// <summary>
@@ -48,6 +51,7 @@ public class Player : Target
         yield return new WaitForSeconds(0.5f);
         playerRequestMoveServerRPC(0, true);
         drawHandOfCards();
+        actions = new Vector2Int(0, 1);
     }
 
     /// <summary>
