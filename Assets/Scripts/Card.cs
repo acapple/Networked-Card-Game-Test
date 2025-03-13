@@ -179,6 +179,7 @@ public class Card : NetworkBehaviour
                 {
                     if (allTargetsOfCard[i] is Player)
                     {
+                        NetworkHud.nh.print("Requesting move to section "+section);
                         ((Player)allTargetsOfCard[i]).playerRequestMoveServerRPC(section);
                     }
                 }

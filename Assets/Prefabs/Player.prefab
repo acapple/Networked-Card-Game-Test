@@ -76,6 +76,7 @@ MonoBehaviour:
   cardSpacing: 95
   StartingHandSize: 5
   playerImage: {fileID: 8339620267712070588}
+  actions: {x: 0, y: 0}
 --- !u!1 &314060304468450979
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,4 +387,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d014f73d8fedba741b31e7f9a4599626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  returning: 2
+  returning: 1
