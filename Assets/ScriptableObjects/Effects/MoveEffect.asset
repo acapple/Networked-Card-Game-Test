@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MoveEffect
   m_EditorClassIdentifier: 
   who: 1
-  what: 1
-  amount: 0
-  where: 0
-  distances: {x: 0, y: 0, z: 0}
+  what: 3
+  amount: 1
+  where: 1
+  distances: {x: 0, y: 8, z: 1}
   when: 0
