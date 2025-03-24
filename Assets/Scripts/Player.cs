@@ -11,8 +11,6 @@ public class Player : Target
     [SerializeField]
     internal int playerID;
     [SerializeField]
-    internal Deck deck;
-    [SerializeField]
     GameObject cardHandSample;
     [SerializeField]
     Canvas canvas;
@@ -226,7 +224,7 @@ public class Player : Target
 
 
     [Rpc(SendTo.Server)]
-    internal void RequestCardPlayedServerRPC(int cardNum, int section)
+    internal override void RequestCardPlayedServerRPC(int cardNum, int section)
     {
 
         NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);

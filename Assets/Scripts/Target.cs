@@ -4,9 +4,11 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
-public class Target : NetworkBehaviour
+public abstract class Target : NetworkBehaviour
 {
     internal NetworkVariable<float> health = new NetworkVariable<float>(0);
+    [SerializeField]
+    internal Deck deck;
 
 
     public override void OnNetworkSpawn()
@@ -27,4 +29,7 @@ public class Target : NetworkBehaviour
     {
         NetworkHud.nh.print("Health went from " + previous + " to " + current);
     }
+
+    [Rpc(SendTo.Server)]
+    internal abstract void RequestCardPlayedServerRPC(int cardNum, int section);
 }
