@@ -31,5 +31,5 @@ public abstract class Target : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    internal abstract void RequestCardPlayedServerRPC(int cardNum, int section);
+    internal virtual void RequestCardPlayedServerRPC(int cardNum, int section) { }
 }
