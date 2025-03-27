@@ -121,7 +121,7 @@ public class NetworkHud : NetworkBehaviour
         if (NetworkManager.Singleton.IsServer)
         {
             GUILayout.Label("# Connected: " + NetworkManager.Singleton.ConnectedClients.Count);
-            if (GUILayout.Button("Start Turn Timer")) GameManager.gm.playersTurn();
+            if (GUILayout.Button("Start Turn Timer")) GameManager.gm.initiatePlayersTurn();
         }
 
         if (NetworkManager.Singleton.IsConnectedClient)

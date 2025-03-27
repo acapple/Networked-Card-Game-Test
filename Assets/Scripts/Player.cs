@@ -6,26 +6,35 @@ using Unity.Netcode;
 
 public class Player : Target
 {
-    [SerializeField]
-    internal List<Card> hand;
+    #region variables
+    //Static variables
+    internal static Dictionary<int, Player> playersInGame;
+
+    [Header("Networking & UI variables")]
     [SerializeField]
     internal int playerID;
     [SerializeField]
-    GameObject cardHandSample;
-    [SerializeField]
-    Canvas canvas;
-    [SerializeField]
     float cardSpacing = 95;
-    [SerializeField]
-    int StartingHandSize = 5;
-    internal static Dictionary<int, Player> playersInGame;
+    
+    [Header("Gameplay variables")]
+    [SerializeField] [Tooltip("(Number of actions remaining this turn, number of actions next turn)")]
+    internal Vector2 actions;
+    [SerializeField] [Tooltip("Hand size at the start of the game -> to move to game manager")]
+    int StartingHandSize = 5; // TODO: Export this variable to gamemanager
+    [SerializeField] [Tooltip("What cards are currently in the player's hand")]
+    internal List<Card> hand;
+
+    [Header("References")]
     [SerializeField]
     internal RawImage playerImage;
     [SerializeField]
-    [Tooltip("(Number of actions remaining this turn, number of actions next turn)")]
-    internal Vector2 actions; 
+    Canvas canvas;
+    /*[SerializeField]
+    GameObject cardHandSample;*/
 
+    #endregion variables
 
+    #region setup
     /// <summary>
     /// Adds this player to the network hud's local player
     /// </summary>
@@ -49,20 +58,10 @@ public class Player : Target
         yield return new WaitForSeconds(0.5f);
         playerRequestMoveServerRPC(0, true);
         drawHandOfCards();
-        actions = new Vector2Int(0, 1);
+        actions = new Vector2Int(0, GameManager.gm.numberOfActions);
     }
 
-    /// <summary>
-    /// Removes this player from the dictionary of local players
-    /// </summary>
-    public override void OnNetworkDespawn()
-    {
-        base.OnNetworkDespawn();
-        if (IsServer)
-        {
-            playersInGame.Remove(playerID);
-        }
-    }
+    
 
     /// <summary>
     /// Initializes and adds this player to the server side dictionary of players in the game
@@ -80,7 +79,19 @@ public class Player : Target
             playersInGame.Add(playerID, this);
             playerImage.color = new Color(Random.value, Random.value, Random.value);
         }
-        
+    }
+
+
+    /// <summary>
+    /// Removes this player from the dictionary of local players
+    /// </summary>
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        if (IsServer)
+        {
+            playersInGame.Remove(playerID);
+        }
     }
 
     [Rpc(SendTo.NotServer)]
@@ -89,8 +100,10 @@ public class Player : Target
         if (!IsLocalPlayer || !IsOwner) return;
         playerID = id;
     }
+    #endregion setup
 
 
+    #region movement
     /// <summary>
     /// Initial call of player being dragged to get the player to move sections
     /// </summary>
@@ -103,12 +116,15 @@ public class Player : Target
             NetworkHud.nh.print("Tried moving off the section");
             return;
         }
-        NetworkHud.nh.print("Moving to section " + moveto);
+        NetworkHud.nh.print("Requesting move to section " + moveto);
         playerRequestMoveServerRPC(moveto);
     }
 
+
     /// <summary>
     /// Player requests to move. 
+    /// 
+    /// TODO: Sync positioning in a new function
     /// </summary>
     /// <param name="section">Where to move to</param>
     /// <param name="moveOverride">ignore not being player's turn</param>
@@ -122,13 +138,14 @@ public class Player : Target
             double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
             angle = angle * section + angle * 0.5f;
             Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
-            NetworkHud.nh.print("moving to position: " + position);
+            if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("moving to position: " + position);
             playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
         } else
         {
             NetworkHud.nh.print("Invalid move action. Is not player turn.");
         }
     }
+
     
     /// <summary>
     /// Server tells client where to move the player to
@@ -140,9 +157,11 @@ public class Player : Target
         double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
         angle = angle * section + angle * 0.5f;
         Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
-        NetworkHud.nh.print("moving to position: " + position);
+        if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("moving to position: " + position);
         playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
     }
+
+    #endregion movement
 
 
     /// <summary>
@@ -186,6 +205,8 @@ public class Player : Target
         addCardToHandClientRPC(c.keyInDeck);
         return;
     }
+
+
     [Rpc(SendTo.NotServer)]
     internal void addCardToHandClientRPC(int cardKey)
     {

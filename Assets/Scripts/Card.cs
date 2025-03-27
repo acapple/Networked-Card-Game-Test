@@ -11,6 +11,9 @@ using Unity.Netcode;
 /// </summary>
 public class Card : NetworkBehaviour
 {
+    #region variables
+
+
     [SerializeField]
     internal string title = "Card";
     internal int keyInDeck = -1;
@@ -19,6 +22,11 @@ public class Card : NetworkBehaviour
     internal CardScriptableObject cardReference;
 
 
+    #endregion variables
+
+    #region playing card
+
+    #region [PC] client functions
     /// <summary>
     /// [Client Only] When a client clicks on a card
     /// </summary>
@@ -42,9 +50,13 @@ public class Card : NetworkBehaviour
         }
     }
 
+    #endregion client playing card subregion
+
+    #region  [PC] server functions
 
     /// <summary>
-    /// [Server Only] Play the card (if its the server)
+    /// [Server Only] First, checks to see if the card can be played, 
+    /// then calls organizeCardEffect for each effect to put the card effects into play
     /// 
     /// TODO: Add more checks to make sure card can be played here BEFORE starting to put effects into play
     /// </summary>
@@ -195,4 +207,8 @@ public class Card : NetworkBehaviour
                 break;
         }
     }
+
+    #endregion
+
+    #endregion
 }

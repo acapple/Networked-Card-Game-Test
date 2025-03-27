@@ -12,6 +12,7 @@ using UnityEngine.Events;
 public class CardScriptableObject : ScriptableObject
 {
     public string cardName = "Not a card.";
+    public Color bgcolor;
     //public int power;
     public CardEffect[] effects;
 }
