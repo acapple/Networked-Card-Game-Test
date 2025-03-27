@@ -163,12 +163,13 @@ public class Player : Target
 
     #endregion movement
 
-
+    #region card hand management
     /// <summary>
-    /// Draws a hand of cards equal to the starting hand size
+    /// [Server Only] Draws a hand of cards equal to the starting hand size
     /// </summary>
     void drawHandOfCards()
     {
+        if (!IsServer) return;
         NetworkHud.nh.print("Creating a hand of cards");
         deck.ShuffleDeck();
         for (int i = 0; i < StartingHandSize; i++)
@@ -179,7 +180,7 @@ public class Player : Target
 
 
     /// <summary>
-    /// Adds a card to the player's hand
+    /// [Server Only] Adds a card to the player's hand
     /// </summary>
     /// <param name="c"> the card added to the players hand</param>
     internal void AddCardToHand(Card c)
@@ -207,6 +208,10 @@ public class Player : Target
     }
 
 
+    /// <summary>
+    /// Adds a card to the clientside hand
+    /// </summary>
+    /// <param name="cardKey"> the dictionary key of the card to be added to the hand </param>
     [Rpc(SendTo.NotServer)]
     internal void addCardToHandClientRPC(int cardKey)
     {
@@ -224,8 +229,13 @@ public class Player : Target
     }
 
 
+    /// <summary>
+    /// removes a card from the client's hand 
+    /// </summary>
+    /// <param name="result"></param>
+    /// <param name="card"></param>
     [Rpc(SendTo.NotServer)]
-    internal void RemoveCardFromHandClientRPC(string result, int card)
+    internal void RemoveCardFromHandClientRPC(int card)
     {
         if (!IsLocalPlayer || !IsOwner) return;
 
@@ -244,16 +254,22 @@ public class Player : Target
     }
 
 
+    /// <summary>
+    /// [Server only] Starts the process of playing a card
+    /// 
+    /// TODO: change cardnum to the key in the deck dictionary.
+    /// </summary>
+    /// <param name="cardNum"> the card number, based on the positioning in the hand. </param>
+    /// <param name="section"></param>
     [Rpc(SendTo.Server)]
     internal override void RequestCardPlayedServerRPC(int cardNum, int section)
     {
-
-        NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
+        //NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
-        NetworkHud.nh.print("Player ID during the request card played: " + playerID + ", " + playersInGame.Values);
+        //NetworkHud.nh.print("Player ID during the request card played: " + playerID + ", " + playersInGame.Values);
         if (hand[cardNum].ThisCardPlay(playerID, section))
         {
-            RemoveCardFromHandClientRPC("true", cardNum);
+            RemoveCardFromHandClientRPC(cardNum);
             //NetworkHud.nh.print("Removing a card to the hand");
             Card c = hand[cardNum];
             hand.RemoveAt(cardNum);
@@ -268,4 +284,5 @@ public class Player : Target
             }
         }
     }
+    #endregion card hand management
 }
