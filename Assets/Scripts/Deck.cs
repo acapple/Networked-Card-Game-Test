@@ -7,19 +7,26 @@ using TMPro;
 
 public class Deck : NetworkBehaviour
 {
-    [SerializeField]
-    GameObject cardSample;
-    [SerializeField]
-    Transform canvas;
+    #region variables
+    [Header("variable pointers. For debug use. ")]
     [SerializeReference]
     List<Card> cardsInDeck = new List<Card>();
     internal List<Card> discard;
     internal Dictionary<int, Card> cardsFromThisDeck;
-    [SerializeField]
-    private DeckScriptableObject startingDeck;
     
 
+    [Header("References")]
+    [SerializeField]
+    private DeckScriptableObject startingDeck;
+    [SerializeField]
+    GameObject cardUISample;
+    [SerializeField]
+    Transform canvas;
+    #endregion variables
 
+
+
+    #region startup
     /// <summary>
     /// Initializes deck
     /// </summary>
@@ -35,7 +42,7 @@ public class Deck : NetworkBehaviour
         //  physical representation (inhand), not all the time (as is the case rn)
         for (int i=0; i< startingDeck.startingCards.Length; i++)
         {
-            GameObject c = Instantiate(cardSample, canvas);
+            GameObject c = Instantiate(cardUISample, canvas);
             cardsInDeck.Add(c.GetComponent<Card>());
             cardsInDeck[i].title = "C#"+i;
             cardsInDeck[i].cardReference = startingDeck.startingCards[i];
@@ -49,8 +56,10 @@ public class Deck : NetworkBehaviour
         }
         printDeckValues();
     }
+    #endregion startup
 
 
+    #region debugging
     /// <summary>
     /// Prints the deck values
     /// </summary>
@@ -66,8 +75,9 @@ public class Deck : NetworkBehaviour
         }
         NetworkHud.nh.print(deckDebug);
     }
+    #endregion debugging
 
-
+    #region shuffling
     /// <summary>
     /// [Server Only] shuffles discard pile into the deck
     /// </summary>
@@ -134,8 +144,11 @@ public class Deck : NetworkBehaviour
         }
         if (GameManager.gm.repetitiveMessages) printDeckValues();
     }
+    #endregion shuffling
 
 
+
+    #region card movement
     /// <summary>
     /// [Server Only]
     /// Draws the top card of the deck
@@ -183,6 +196,7 @@ public class Deck : NetworkBehaviour
         t.text = c.title;
         cardsInDeck.RemoveAt(cardLocationInDeck);
     }
+    #endregion card movement
 
 
     internal void searchDeck()

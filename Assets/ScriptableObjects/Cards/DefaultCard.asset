@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DefaultCard
   m_EditorClassIdentifier: 
   cardName: Draw 1
+  bgcolor: {r: 1, g: 1, b: 1, a: 1}
   effects:
   - {fileID: 11400000, guid: fcec72cfb3ba7364895371954292334d, type: 2}
   - {fileID: 11400000, guid: 2e0dc50d269ce1b4199fe69fd508c95c, type: 2}
