@@ -26,8 +26,6 @@ public class Player : Target
 
     [Header("References")]
     [SerializeField]
-    internal RawImage playerImage;
-    [SerializeField]
     Canvas canvas;
     /*[SerializeField]
     GameObject cardHandSample;*/
@@ -77,7 +75,7 @@ public class Player : Target
             } while (playersInGame.ContainsKey(playerID));
             updatePlayerIDClientRPC(playerID);
             playersInGame.Add(playerID, this);
-            playerImage.color = new Color(Random.value, Random.value, Random.value);
+            image.color = new Color(Random.value, Random.value, Random.value);
         }
     }
 
@@ -110,7 +108,7 @@ public class Player : Target
     public void movePlayer()
     {
         if (!IsLocalPlayer) return;
-        int moveto = Terrain.terrain.getMapSection(playerImage.transform.position);
+        int moveto = Terrain.terrain.getMapSection(image.transform.position);
         if (moveto == -1)
         {
             NetworkHud.nh.print("Tried moving off the section");
@@ -139,7 +137,7 @@ public class Player : Target
             angle = angle * section + angle * 0.5f;
             Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
             if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("moving to position: " + position);
-            playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
+            image.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
         } else
         {
             NetworkHud.nh.print("Invalid move action. Is not player turn.");
@@ -158,7 +156,7 @@ public class Player : Target
         angle = angle * section + angle * 0.5f;
         Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
         if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("moving to position: " + position);
-        playerImage.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
+        image.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
     }
 
     #endregion movement
@@ -267,7 +265,7 @@ public class Player : Target
         //NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of "+hand.Count+" cards"/*" named: " + hand[cardNum].title*/);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);
         //NetworkHud.nh.print("Player ID during the request card played: " + playerID + ", " + playersInGame.Values);
-        if (hand[cardNum].ThisCardPlay(playerID, section))
+        if (hand[cardNum].ThisCardPlay(this, section))
         {
             RemoveCardFromHandClientRPC(cardNum);
             //NetworkHud.nh.print("Removing a card to the hand");

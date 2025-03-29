@@ -61,7 +61,7 @@ public class Card : NetworkBehaviour
     /// TODO: Add more checks to make sure card can be played here BEFORE starting to put effects into play
     /// </summary>
     /// <returns></returns>
-    internal virtual bool ThisCardPlay(int player, int section)
+    internal virtual bool ThisCardPlay(Target user, int section)
     {
         NetworkHud.nh.print("Trying to play card " +title);
         if (!NetworkManager.Singleton.IsServer) return false;
@@ -70,16 +70,37 @@ public class Card : NetworkBehaviour
             NetworkHud.nh.print("Card attempted to be played during enemy turn");
             return false;
         }
-        if (Player.playersInGame[player].actions.x <= 0)
+        if (user is Player)
         {
-            NetworkHud.nh.print("Card attempted to be played, but the player is out of actions");
-            return false;
+            if (((Player)user).actions.x <= 0) {
+
+                NetworkHud.nh.print("Card attempted to be played, but the player is out of actions");
+                return false;
+            }
+
+            ((Player)user).actions.x--;
         }
-        Player.playersInGame[player].actions.x--;
         for (int i=0; i<cardReference.effects.Length; i++)
         {
             if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card effect going into play");
-            organizeCardEffect(cardReference.effects[i], player, section);
+            organizeCardEffect(cardReference.effects[i], user, section);
+        }
+        return true;
+    }
+
+    internal static bool playCard(CardScriptableObject card, Target user, int section)
+    {
+        NetworkHud.nh.print("Trying to play card " + card.cardName);
+        if (!NetworkManager.Singleton.IsServer) return false;
+        if (GameManager.gm.State != GameManager.gameState.EnemyTurn)
+        {
+            NetworkHud.nh.print("Card attempted to be played during player turn");
+            return false;
+        }
+        for (int i = 0; i < card.effects.Length; i++)
+        {
+            if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Card effect going into play");
+            organizeCardEffect(card.effects[i], user, section);
         }
         return true;
     }
@@ -95,15 +116,15 @@ public class Card : NetworkBehaviour
     ///     add missing cases as I think of them; 
     /// </summary>
     /// <param name="effect">The effect to be decompiled</param>
-    /// <param name="player">the player playing the card</param>
+    /// <param name="user">the player playing the card</param>
     /// <param name="section">the section that card is played in</param>
-    private void organizeCardEffect(CardEffect effect, int player, int section)
+    private static void organizeCardEffect(CardEffect effect, Target user, int section)
     {
         if (!NetworkManager.Singleton.IsServer) return;
         //Figure out what sections
         bool[] validSections = new bool[Terrain.terrain.numSections];
         for (int i = 0; i<validSections.Length; i++) validSections[i] = false;
-        int playerPosition = Terrain.terrain.getMapSection(Player.playersInGame[player].playerImage.transform.position);
+        int playerPosition = Terrain.terrain.getMapSection(user.image.transform.position);
         switch (effect.where)
         {
             case cardRangeEnum.self:
@@ -128,7 +149,7 @@ public class Card : NetworkBehaviour
         switch (effect.who)
         {
             case cardTargetEnum.self:
-                allTargetsOfCard.Add(Player.playersInGame[player]);
+                allTargetsOfCard.Add(user);
                 break;
             case cardTargetEnum.oneAlly:
             case cardTargetEnum.allAllies:
@@ -162,7 +183,7 @@ public class Card : NetworkBehaviour
         switch (effect.what)
         {
             case cardEffectEnum.drawCard:
-                NetworkHud.nh.print("Drawing a card for playerid: " + player);
+                NetworkHud.nh.print("Drawing a card for playerid: " + user);
                 //For each target, if they're a player, they draw a card from their own deck equal to the effect ammount
                 for (int i=0; i<allTargetsOfCard.Count; i++)
                 {

@@ -5,9 +5,19 @@ using UnityEngine;
 
 public class Enemy : Target
 {
+
     [Rpc(SendTo.Server)]
     internal override void RequestCardPlayedServerRPC(int cardNum, int section)
     {
+        Card c = deck.drawCard();
+        if (Card.playCard(c.cardReference, this, Terrain.terrain.getMapSection(image.transform.position)))
+        {
+            deck.discardCard(c);
+        } else
+        {
+
+        }
+
 
         /*NetworkHud.nh.print("Got asked to play card numbered: " + cardNum + " out of " + hand.Count + " cards"/*" named: " + hand[cardNum].title);
         //Debug.Log("Player asked to play card numbered: " + cardNum + " named: " + hand[cardNum].name);

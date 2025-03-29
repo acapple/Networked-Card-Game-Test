@@ -12,6 +12,8 @@ public abstract class Target : NetworkBehaviour
     internal NetworkVariable<float> health = new NetworkVariable<float>(0);
     [SerializeField]
     internal Deck deck;
+    [SerializeField]
+    internal UnityEngine.UI.RawImage image;
 
 
     /// <summary>

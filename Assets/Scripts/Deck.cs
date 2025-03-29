@@ -148,7 +148,7 @@ public class Deck : NetworkBehaviour
 
 
 
-    #region card movement
+    #region drawing a card
     /// <summary>
     /// [Server Only]
     /// Draws the top card of the deck
@@ -196,7 +196,41 @@ public class Deck : NetworkBehaviour
         t.text = c.title;
         cardsInDeck.RemoveAt(cardLocationInDeck);
     }
-    #endregion card movement
+    #endregion drawing a card
+
+
+    #region discarding a card
+
+
+    /// <summary>
+    /// adds a card to discard pile
+    /// 
+    /// TODO: Change to having two dictionaries, so searching is not needed
+    /// TODO: add a check to make sure the card is not already in the deck
+    /// TODO: change Card in deck from being a Card to CardReference
+    /// </summary>
+    /// <param name="c">card to discard</param>
+    internal void discardCard(Card c)
+    {
+        discard.Add(c);
+        foreach (int keyVar in cardsFromThisDeck.Keys)
+        {
+            if (cardsFromThisDeck[keyVar] == c)
+            {
+                discardCardClientRPC(keyVar);
+                break;
+            }
+        }
+    }
+
+
+    [Rpc(SendTo.NotServer)]
+    internal void discardCardClientRPC(int key)
+    {
+        discard.Add(cardsFromThisDeck[key]);
+    } 
+
+    #endregion discarding a card
 
 
     internal void searchDeck()
