@@ -33,6 +33,8 @@ public class GameManager : NetworkBehaviour
     [Header("References")]
     [SerializeField]
     TMP_Text timer;
+    [SerializeField]
+    EnemyManager enemyManager;
 
     //Getters & hidden variables
     private IEnumerator playerTurnCoroutine;
@@ -43,6 +45,7 @@ public class GameManager : NetworkBehaviour
     void Awake()
     {
         if (gm == null) gm = this;
+        enemyManager.spawnEnemies();
     }
 
 

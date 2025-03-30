@@ -13,6 +13,8 @@ public class Deck : NetworkBehaviour
     List<Card> cardsInDeck = new List<Card>();
     internal List<Card> discard;
     internal Dictionary<int, Card> cardsFromThisDeck;
+    [SerializeField]
+    bool showCardUI = false;
     
 
     [Header("References")]
@@ -172,9 +174,12 @@ public class Deck : NetworkBehaviour
             }
         }
         Card c = cardsInDeck[cardLocationInDeck];
-        c.GetComponent<Image>().enabled = true;
-        TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
-        t.text = c.title;
+        if (showCardUI)
+        {
+            c.GetComponent<Image>().enabled = true;
+            TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
+            t.text = c.title;
+        }
         cardsInDeck.RemoveAt(cardLocationInDeck);
         removeCardFromDeckClientRpc(cardLocationInDeck);
         return c;

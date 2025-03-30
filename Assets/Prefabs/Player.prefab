@@ -69,12 +69,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deck: {fileID: 314060304468451164}
+  image: {fileID: 8339620267712070588}
   playerID: 0
   cardSpacing: 95
   actions: {x: 0, y: 0}
   StartingHandSize: 5
   hand: []
-  playerImage: {fileID: 8339620267712070588}
   canvas: {fileID: 6100063532722446077}
 --- !u!1 &314060304468450979
 GameObject:
@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardsInDeck: []
+  showCardUI: 1
   startingDeck: {fileID: 11400000, guid: b0348aba91d1e7541b9dce77cfa50c75, type: 2}
   cardUISample: {fileID: 5821028111029674866, guid: 9d494377423913e4b8e2006f329c2c17, type: 3}
   canvas: {fileID: 8434222694888808820}
