@@ -6,9 +6,12 @@ public class EnemyManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject enemy;
+    [SerializeField]
+    internal List<Enemy> enemyList;
 
     internal void spawnEnemies()
     {
-        Instantiate(enemy);
+        enemyList = new List<Enemy>();
+        enemyList.Add(Instantiate(enemy).GetComponent<Enemy>());
     }
 }

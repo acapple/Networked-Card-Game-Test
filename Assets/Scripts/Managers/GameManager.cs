@@ -119,10 +119,29 @@ public class GameManager : NetworkBehaviour
     /// </summary>
     internal void playerTurnOver()
     {
-        state = gameState.EnemyTurn;
         timer.text = "";
         playerTurnCoroutine = null;
+        startEnemyTurn();
     }
 
     #endregion player turn
+
+
+    #region enemy Turn
+    internal void startEnemyTurn()
+    {
+        state = gameState.EnemyTurn;
+        List<Enemy> enemies = enemyManager.enemyList;
+        for (int i=0; i<enemies.Count; i++)
+        {
+            enemies[i].RequestCardPlayedServerRPC(1, Terrain.terrain.getMapSection(enemies[i].image.transform.position) - 1);
+        }
+        endEnemyTurn();
+    }
+
+    internal void endEnemyTurn()
+    {
+
+    }
+    #endregion enemy turn
 }
