@@ -6,6 +6,12 @@ using UnityEngine;
 public class Enemy : Target
 {
 
+
+    private void Awake()
+    {
+        Terrain.terrain.moveImage(image, 4);
+    }
+
     [Rpc(SendTo.Server)]
     internal override void RequestCardPlayedServerRPC(int cardNum, int section)
     {

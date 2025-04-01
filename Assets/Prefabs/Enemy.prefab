@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInDeck: []
   showCardUI: 0
-  startingDeck: {fileID: 0}
-  cardUISample: {fileID: 0}
+  startingDeck: {fileID: 11400000, guid: 668625abfdc35604a9759ead9cefe6c0, type: 2}
+  cardUISample: {fileID: 5821028111029674866, guid: 9d494377423913e4b8e2006f329c2c17, type: 3}
   canvas: {fileID: 3008715193901435305}
 --- !u!1 &2991877053333314292
 GameObject:
@@ -85,7 +85,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -306, y: -150.2}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6351996170276251542
 CanvasRenderer:
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

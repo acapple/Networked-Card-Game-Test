@@ -133,11 +133,7 @@ public class Player : Target
         {
             NetworkHud.nh.print("Moving to section " + section);
             movePlayerClientRPC(section);
-            double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
-            angle = angle * section + angle * 0.5f;
-            Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
-            if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("moving to position: " + position);
-            image.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
+            Terrain.terrain.moveImage(image, section);
         } else
         {
             NetworkHud.nh.print("Invalid move action. Is not player turn.");
@@ -152,11 +148,7 @@ public class Player : Target
     [Rpc(SendTo.NotServer)]
     public void movePlayerClientRPC(int section)
     {
-        double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
-        angle = angle * section + angle * 0.5f;
-        Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
-        if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("moving to position: " + position);
-        image.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
+        Terrain.terrain.moveImage(image, section);
     }
 
     #endregion movement

@@ -46,6 +46,17 @@ public class Terrain : MonoBehaviour
         return (int) Mathf.Floor(angle);
     }
 
+
+    internal void moveImage(UnityEngine.UI.RawImage image, int section)
+    {
+        double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
+        angle = angle * section + angle * 0.5f;
+        Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
+        if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("moving to position: " + position);
+        image.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
+    }
+
+
     internal List<Target> getPlayersInSection(int i)
     {
         List<Target> targets = new List<Target>();
