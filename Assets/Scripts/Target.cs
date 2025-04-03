@@ -9,6 +9,8 @@ using System;
 /// </summary>
 public abstract class Target : NetworkBehaviour
 {
+    [SerializeField]
+    private int defaultHealth = 1;
     internal NetworkVariable<float> health = new NetworkVariable<float>(0);
     [SerializeField]
     internal Deck deck;
@@ -29,7 +31,7 @@ public abstract class Target : NetworkBehaviour
         }
         if (IsServer)
         {
-            health.Value = 1;
+            health.Value = defaultHealth;
         }
     }
 
@@ -42,6 +44,7 @@ public abstract class Target : NetworkBehaviour
     public void HealthChanged(float previous, float current)
     {
         NetworkHud.nh.print("Health went from " + previous + " to " + current);
+        defaultHealth = (int)health.Value;
     }
 
 

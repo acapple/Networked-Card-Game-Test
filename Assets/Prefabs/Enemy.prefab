@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1826384810
+  GlobalObjectIdHash: 1236020958
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6405e68135f08334b8e25ad3a07f8133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultHealth: 100
   deck: {fileID: 143510634077122854}
   image: {fileID: 1684432737051510976}
 --- !u!1 &6120952396948172456

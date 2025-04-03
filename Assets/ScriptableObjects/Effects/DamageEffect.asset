@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e7577008847b3419c56730a7e97448, type: 3}
   m_Name: DamageEffect
   m_EditorClassIdentifier: 
-  who: 1
+  who: 6
   what: 1
   amount: 1
   where: 0

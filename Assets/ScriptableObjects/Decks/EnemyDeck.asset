@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c4843913df1bb14fab4c53f2939de96, type: 3}
   m_Name: EnemyDeck
   m_EditorClassIdentifier: 
-  startingCards: []
+  startingCards:
+  - {fileID: 11400000, guid: 97b0bb75d9189d0439e5abe7c49e2bd6, type: 2}
