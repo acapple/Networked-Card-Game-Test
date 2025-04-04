@@ -62,7 +62,7 @@ public class Terrain : MonoBehaviour
         List<Target> targets = new List<Target>();
         foreach (Player p in Player.playersInGame.Values)
         {
-            if (i == getMapSection(p.transform.position))
+            if (i == getMapSection(p.image.transform.position))
             {
                 targets.Add(p);
             }

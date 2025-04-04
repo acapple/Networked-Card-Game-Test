@@ -15,6 +15,6 @@ MonoBehaviour:
   who: 6
   what: 1
   amount: 1
-  where: 0
-  distances: {x: 0, y: 0, z: 0}
+  where: 1
+  distances: {x: 0, y: 8, z: 0}
   when: 0

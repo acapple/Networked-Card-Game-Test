@@ -174,6 +174,18 @@ public class Card : NetworkBehaviour
                     }
                 }
                 break;
+            case cardTargetEnum.everyone:
+                List<Target> temp2;
+                for (int i = 0; i < validSections.Length; i++)
+                {
+                    if (!validSections[i]) continue;
+                    temp2 = Terrain.terrain.getPlayersInSection(i);
+                    for (int j = 0; j < temp2.Count; j++)
+                    {
+                        allTargetsOfCard.Add(temp2[j]);
+                    }
+                }
+                break;
         }
 
         // bool[] validSections          :: A boolean array where validSections[i] is if the card is hitting section i
