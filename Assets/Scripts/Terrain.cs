@@ -13,6 +13,7 @@ public class Terrain : MonoBehaviour
     private void Awake()
     {
         terrain = this;
+        TargetLocator.initiate();
         resize();
     }
 
@@ -70,3 +71,4 @@ public class Terrain : MonoBehaviour
         return targets;
     }
 }
+
