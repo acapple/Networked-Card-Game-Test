@@ -13,6 +13,7 @@ public class TargetLocator
     {
         who = newTarget;
         section = Terrain.terrain.getMapSection(newTarget.image.transform.position);
+        allTargets.Add(this);
     }
 
     internal bool isPlayer()
@@ -54,5 +55,17 @@ public class TargetLocator
             if (count >= Enemies.Length) break;
         }
         return Enemies;
+    }
+
+    internal static void move(Target who, int where)
+    {
+        for (int i=0; i<allTargets.Count; i++)
+        {
+            if (who == allTargets[i].who)
+            {
+                allTargets[i].section = where;
+                break;
+            }
+        }
     }
 }

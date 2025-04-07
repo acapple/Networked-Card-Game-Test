@@ -76,6 +76,7 @@ public class Player : Target
             updatePlayerIDClientRPC(playerID);
             playersInGame.Add(playerID, this);
             image.color = new Color(Random.value, Random.value, Random.value);
+            new TargetLocator(this);
         }
     }
 
@@ -134,6 +135,7 @@ public class Player : Target
             NetworkHud.nh.print("Moving to section " + section);
             movePlayerClientRPC(section);
             Terrain.terrain.moveImage(image, section);
+            TargetLocator.move(this, section);
         } else
         {
             NetworkHud.nh.print("Invalid move action. Is not player turn.");

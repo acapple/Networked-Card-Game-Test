@@ -55,6 +55,7 @@ public class Terrain : MonoBehaviour
         Vector3 position = new Vector2((float)System.Math.Sin(angle), (float)System.Math.Cos(angle));
         if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("moving to position: " + position);
         image.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
+        TargetLocator.move(image.transform.parent.parent.GetComponent<Target>(), section);
     }
 
 
