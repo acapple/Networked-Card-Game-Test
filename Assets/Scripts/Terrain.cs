@@ -59,15 +59,19 @@ public class Terrain : MonoBehaviour
     }
 
 
-    internal List<Target> getPlayersInSection(int i)
+    /// <summary>
+    /// Return a list of players between the two sections
+    /// </summary>
+    /// <param name="min">inclusive</param>
+    /// <param name="max">exclusive</param>
+    /// <returns></returns>
+    internal List<Target> getPlayersBetweenSection(int min, int max)
     {
         List<Target> targets = new List<Target>();
-        foreach (Player p in Player.playersInGame.Values)
+        TargetLocator[] players = TargetLocator.getPlayers();
+        for (int i=0; i<players.Length; i++)
         {
-            if (i == getMapSection(p.image.transform.position))
-            {
-                targets.Add(p);
-            }
+            if (min <= players[i].section && players[i].section < max) targets.Add(players[i].who);
         }
         return targets;
     }

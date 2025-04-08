@@ -155,13 +155,24 @@ public class Card : NetworkBehaviour
             case cardTargetEnum.allAllies:
                 //figure out a way to pick an ally. For now, may do random of all selected allies
                 List<Target> temp;
+                int min = -1;
                 for (int i=0; i<validSections.Length; i++)
                 {
-                    if (!validSections[i]) continue;
-                    temp = Terrain.terrain.getPlayersInSection(i);
-                    for (int j=0; j<temp.Count; j++) {
-                        allTargetsOfCard.Add(temp[j]);
+                    if (!validSections[i] && min == -1) continue;
+                    if (validSections[i] && min == -1)
+                    {
+                        min = i;
                     }
+                    if (validSections[i] && (i+1 == validSections.Length || !validSections[i+1]))
+                    {
+                        temp = Terrain.terrain.getPlayersBetweenSection(min, i);
+                        min = -1;
+                        for (int j = 0; j < temp.Count; j++)
+                        {
+                            allTargetsOfCard.Add(temp[j]);
+                        }
+                    }
+                    
                 }
                 if (effect.who == cardTargetEnum.allAllies) break;
                 if (allTargetsOfCard.Count > 1)
@@ -176,13 +187,22 @@ public class Card : NetworkBehaviour
                 break;
             case cardTargetEnum.everyone:
                 List<Target> temp2;
+                int min2 = -1;
                 for (int i = 0; i < validSections.Length; i++)
                 {
-                    if (!validSections[i]) continue;
-                    temp2 = Terrain.terrain.getPlayersInSection(i);
-                    for (int j = 0; j < temp2.Count; j++)
+                    if (!validSections[i] && min2 == -1) continue;
+                    if (validSections[i] && min2 == -1)
                     {
-                        allTargetsOfCard.Add(temp2[j]);
+                        min2 = i;
+                    }
+                    if (validSections[i] && (i + 1 == validSections.Length || !validSections[i + 1]))
+                    {
+                        temp2 = Terrain.terrain.getPlayersBetweenSection(min2, i);
+                        min2 = -1;
+                        for (int j = 0; j < temp2.Count; j++)
+                        {
+                            allTargetsOfCard.Add(temp2[j]);
+                        }
                     }
                 }
                 break;
