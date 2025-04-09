@@ -206,6 +206,39 @@ public class Card : NetworkBehaviour
                     }
                 }
                 break;
+            case cardTargetEnum.oneEnemy:
+            case cardTargetEnum.allEnemies:
+                List<Target> temp3;
+                int min3 = -1;
+                for (int i = 0; i < validSections.Length; i++)
+                {
+                    if (!validSections[i] && min3 == -1) continue;
+                    if (validSections[i] && min3 == -1)
+                    {
+                        min3 = i;
+                    }
+                    if (validSections[i] && (i + 1 == validSections.Length || !validSections[i + 1]))
+                    {
+                        temp3 = Terrain.terrain.getEnemiesBetweenSection(min3, i);
+                        min3 = -1;
+                        for (int j = 0; j < temp3.Count; j++)
+                        {
+                            allTargetsOfCard.Add(temp3[j]);
+                        }
+                    }
+
+                }
+                if (effect.who == cardTargetEnum.allEnemies) break;
+                if (allTargetsOfCard.Count > 1)
+                {
+                    int playerPicked = Random.Range(0, allTargetsOfCard.Count);
+                    for (int i = allTargetsOfCard.Count - 1; i >= 0; i--)
+                    {
+                        if (i == playerPicked) continue;
+                        allTargetsOfCard.RemoveAt(i);
+                    }
+                }
+                break;
         }
 
         // bool[] validSections          :: A boolean array where validSections[i] is if the card is hitting section i

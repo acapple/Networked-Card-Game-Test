@@ -75,5 +75,23 @@ public class Terrain : MonoBehaviour
         }
         return targets;
     }
+
+
+    /// <summary>
+    /// Return a list of enemies between the two sections
+    /// </summary>
+    /// <param name="min">inclusive</param>
+    /// <param name="max">exclusive</param>
+    /// <returns></returns>
+    internal List<Target> getEnemiesBetweenSection(int min, int max)
+    {
+        List<Target> targets = new List<Target>();
+        TargetLocator[] enemies = TargetLocator.getEnemies();
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (min <= enemies[i].section && enemies[i].section < max) targets.Add(enemies[i].who);
+        }
+        return targets;
+    }
 }
 
