@@ -205,6 +205,25 @@ public class Card : NetworkBehaviour
                         }
                     }
                 }
+                min2 = -1;
+                for (int i = 0; i < validSections.Length; i++)
+                {
+                    if (!validSections[i] && min2 == -1) continue;
+                    if (validSections[i] && min2 == -1)
+                    {
+                        min2 = i;
+                    }
+                    if (validSections[i] && (i + 1 == validSections.Length || !validSections[i + 1]))
+                    {
+                        temp2 = Terrain.terrain.getEnemiesBetweenSection(min2, i);
+                        min2 = -1;
+                        for (int j = 0; j < temp2.Count; j++)
+                        {
+                            allTargetsOfCard.Add(temp2[j]);
+                        }
+                    }
+
+                }
                 break;
             case cardTargetEnum.oneEnemy:
             case cardTargetEnum.allEnemies:
@@ -228,7 +247,7 @@ public class Card : NetworkBehaviour
                     }
 
                 }
-                if (effect.who == cardTargetEnum.allEnemies) break;
+                if (effect.who == cardTargetEnum.allEnemies || effect.who == cardTargetEnum.everyone) break;
                 if (allTargetsOfCard.Count > 1)
                 {
                     int playerPicked = Random.Range(0, allTargetsOfCard.Count);
