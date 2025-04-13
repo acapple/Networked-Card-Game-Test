@@ -310,6 +310,16 @@ public class Card : NetworkBehaviour
                     }
                 }
                 break;
+            case cardEffectEnum.push:
+                for (int i = 0; i < allTargetsOfCard.Count; i++)
+                {
+                    if (allTargetsOfCard[i] is Player)
+                    {
+                        NetworkHud.nh.print("Requesting move to section " + section);
+                        ((Player)allTargetsOfCard[i]).playerRequestMoveServerRPC(section);
+                    }
+                }
+                break;
         }
     }
 

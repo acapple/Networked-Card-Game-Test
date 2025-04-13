@@ -36,7 +36,8 @@ public enum cardEffectEnum
     dealDamage,
     heal,
     move,
-    extraAction
+    extraAction,
+    push
 }
 
 public enum cardRangeEnum
