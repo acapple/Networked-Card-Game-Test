@@ -315,8 +315,8 @@ public class Card : NetworkBehaviour
                 {
                     if (allTargetsOfCard[i] is Player)
                     {
-                        NetworkHud.nh.print("Requesting move to section " + section);
-                        ((Player)allTargetsOfCard[i]).playerRequestMoveServerRPC(section);
+                        NetworkHud.nh.print("Requesting move to section " + Terrain.terrain.getMapSection(allTargetsOfCard[i].image.transform.position));
+                        ((Player)allTargetsOfCard[i]).playerRequestMoveServerRPC(Terrain.terrain.getMapSection(allTargetsOfCard[i].image.transform.position) + effect.amount);
                     }
                 }
                 break;
