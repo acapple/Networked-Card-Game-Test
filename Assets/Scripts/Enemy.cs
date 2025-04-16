@@ -10,6 +10,7 @@ public class Enemy : Target
     private void Awake()
     {
         Terrain.terrain.moveImage(image, 4);
+        new TargetLocator(this);
     }
 
     [Rpc(SendTo.Server)]

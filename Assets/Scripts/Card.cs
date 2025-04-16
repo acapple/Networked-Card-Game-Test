@@ -318,6 +318,13 @@ public class Card : NetworkBehaviour
                         NetworkHud.nh.print("Requesting move to section " + Terrain.terrain.getMapSection(allTargetsOfCard[i].image.transform.position));
                         ((Player)allTargetsOfCard[i]).playerRequestMoveServerRPC(Terrain.terrain.getMapSection(allTargetsOfCard[i].image.transform.position) + effect.amount);
                     }
+                    if (allTargetsOfCard[i] is Enemy)
+                    {
+                        int sect = Terrain.terrain.getMapSection(allTargetsOfCard[i].image.transform.position) + effect.amount;
+                        NetworkHud.nh.print("Requesting move to section " + sect);
+                        //((Player)allTargetsOfCard[i]).playerRequestMoveServerRPC(Terrain.terrain.getMapSection(allTargetsOfCard[i].image.transform.position) + effect.amount);
+                        Terrain.terrain.moveImage(allTargetsOfCard[i].image, sect);
+                    }
                 }
                 break;
         }
