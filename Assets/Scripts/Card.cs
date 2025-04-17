@@ -272,8 +272,7 @@ public class Card : NetworkBehaviour
                 for (int i=0; i<allTargetsOfCard.Count; i++)
                 {
                     if (allTargetsOfCard[i] is Player) {
-                        for (int j=0; j<effect.amount; j++) 
-                            ((Player)allTargetsOfCard[i]).AddCardToHand(((Player)allTargetsOfCard[i]).deck.drawCard());
+                        ((Player)allTargetsOfCard[i]).endTurnExtraCardDraw += effect.amount;
                     }
                 }
                 //Server draws a player's card

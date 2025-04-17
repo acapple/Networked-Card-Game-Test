@@ -23,6 +23,8 @@ public class Player : Target
     int StartingHandSize = 5; // TODO: Export this variable to gamemanager
     [SerializeField] [Tooltip("What cards are currently in the player's hand")]
     internal List<Card> hand;
+    [SerializeField]
+    internal int endTurnExtraCardDraw = 0;
 
     [Header("References")]
     [SerializeField]

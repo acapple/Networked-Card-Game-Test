@@ -29,6 +29,8 @@ public class GameManager : NetworkBehaviour
     int playerTurnTime = 10;
     [SerializeField] [Tooltip("How many actions a player gets on their turn by default")]
     internal int numberOfActions = 1;
+    [SerializeField]
+    internal int endOfTurnExtraDraw = 1;
 
     [Header("References")]
     [SerializeField]
@@ -121,6 +123,14 @@ public class GameManager : NetworkBehaviour
     {
         timer.text = "";
         playerTurnCoroutine = null;
+        TargetLocator[] players = TargetLocator.getPlayers();
+        for (int i = 0; i < players.Length; i++)
+        {
+            Player p = (Player)players[i].who;
+            for (int j=0; j<p.endTurnExtraCardDraw+endOfTurnExtraDraw; j++)
+                p.AddCardToHand(p.deck.drawCard());
+            p.endTurnExtraCardDraw = 0;
+        }
         startEnemyTurn();
     }
 

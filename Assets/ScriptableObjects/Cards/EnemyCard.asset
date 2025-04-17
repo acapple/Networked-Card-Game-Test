@@ -16,3 +16,4 @@ MonoBehaviour:
   bgcolor: {r: 0.8941177, g: 0.86274517, b: 0.5058824, a: 0}
   effects:
   - {fileID: 11400000, guid: 337f2641bccf7024eb95fc0f064be16a, type: 2}
+  - {fileID: 11400000, guid: a0d74a7d69795f14f9b1b900da4958da, type: 2}
