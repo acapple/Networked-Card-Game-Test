@@ -141,10 +141,23 @@ public class GameManager : NetworkBehaviour
     internal void startEnemyTurn()
     {
         state = gameState.EnemyTurn;
+        StartCoroutine(enemyTurn());
+    }
+
+    internal IEnumerator enemyTurn()
+    {
         List<Enemy> enemies = enemyManager.enemyList;
-        for (int i=0; i<enemies.Count; i++)
+        for (int i = 0; i < enemies.Count; i++)
         {
-            enemies[i].RequestCardPlayedServerRPC(1, Terrain.terrain.getMapSection(enemies[i].image.transform.position) - 1);
+            for (int j = 0; j < enemies[i].actions[0]; j++)
+            {
+                yield return new WaitForSeconds(0.5f);
+                enemies[i].RequestCardPlayedServerRPC(1, Terrain.terrain.getMapSection(enemies[i].image.transform.position) - 1);
+                
+            }
+            enemies[i].actions[0] = enemies[i].actions[1];
+            enemies[i].actions[1] = 0;
+            yield return new WaitForSeconds(0.5f);
         }
         endEnemyTurn();
     }

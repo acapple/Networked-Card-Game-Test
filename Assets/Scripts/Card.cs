@@ -274,6 +274,10 @@ public class Card : NetworkBehaviour
                     if (allTargetsOfCard[i] is Player) {
                         ((Player)allTargetsOfCard[i]).endTurnExtraCardDraw += effect.amount;
                     }
+                    else if (allTargetsOfCard[i] is Enemy)
+                    {
+                        ((Enemy)allTargetsOfCard[i]).actions[0] += effect.amount;
+                    }
                 }
                 //Server draws a player's card
                 //Player.playersInGame[player].AddCardToHand(startingDeck.drawCard());
@@ -306,6 +310,10 @@ public class Card : NetworkBehaviour
                     if (allTargetsOfCard[i] is Player)
                     {
                         ((Player)allTargetsOfCard[i]).actions.y += effect.amount;
+                    }
+                    else if (allTargetsOfCard[i] is Enemy)
+                    {
+                        ((Enemy)allTargetsOfCard[i]).actions[1] += effect.amount;
                     }
                 }
                 break;

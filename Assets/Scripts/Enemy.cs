@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class Enemy : Target
 {
-
+    internal int[] actions = new int[2];
 
     private void Awake()
     {
         Terrain.terrain.moveImage(image, 4);
         new TargetLocator(this);
+        actions[0] = 1;
+        actions[1] = 1;
     }
 
     [Rpc(SendTo.Server)]
