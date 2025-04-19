@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -12,6 +13,6 @@ public class EnemyManager : MonoBehaviour
     internal void spawnEnemies()
     {
         enemyList = new List<Enemy>();
-        enemyList.Add(Instantiate(enemy).GetComponent<Enemy>());
+        Instantiate(enemy).GetComponent<NetworkObject>().Spawn();
     }
 }

@@ -36,7 +36,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField]
     TMP_Text timer;
     [SerializeField]
-    EnemyManager enemyManager;
+    internal EnemyManager enemyManager;
 
     //Getters & hidden variables
     private IEnumerator playerTurnCoroutine;
@@ -47,7 +47,6 @@ public class GameManager : NetworkBehaviour
     void Awake()
     {
         if (gm == null) gm = this;
-        enemyManager.spawnEnemies();
     }
 
 
@@ -152,7 +151,8 @@ public class GameManager : NetworkBehaviour
             for (int j = 0; j < enemies[i].actions[0]; j++)
             {
                 yield return new WaitForSeconds(0.5f);
-                enemies[i].RequestCardPlayedServerRPC(1, Terrain.terrain.getMapSection(enemies[i].image.transform.position) - 1);
+                //Debug.Log("enemy "+i+ ": "+enemies[i].name);
+                if (enemies[i] != null) enemies[i].RequestCardPlayedServerRPC(1, Terrain.terrain.getMapSection(enemies[i].image.transform.position) - 1);
                 
             }
             enemies[i].actions[0] = enemies[i].actions[1];

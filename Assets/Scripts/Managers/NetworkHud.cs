@@ -49,6 +49,8 @@ public class NetworkHud : NetworkBehaviour
         if (GUILayout.Button("Host"))
         {
             NetworkManager.Singleton.StartHost();
+
+            GameManager.gm.enemyManager.spawnEnemies();
         }
         if (GUILayout.Button("Client"))
         {
@@ -58,6 +60,7 @@ public class NetworkHud : NetworkBehaviour
         if (GUILayout.Button("Server"))
         {
             NetworkManager.Singleton.StartServer();
+            GameManager.gm.enemyManager.spawnEnemies();
         }
         
     }
