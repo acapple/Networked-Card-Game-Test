@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4565b1a7cb7cdb94eb8de84d5a5bdecf, type: 3}
   m_Name: EnemyCard2
   m_EditorClassIdentifier: 
-  cardName: Not a card.
-  bgcolor: {r: 0, g: 0, b: 0, a: 0}
-  effects: []
+  cardName: Infinite Powah!!!
+  bgcolor: {r: 1, g: 0.8548728, b: 0, a: 0}
+  effects:
+  - {fileID: 11400000, guid: fcec72cfb3ba7364895371954292334d, type: 2}
+  - {fileID: 11400000, guid: a0d74a7d69795f14f9b1b900da4958da, type: 2}
+  - {fileID: 11400000, guid: 337f2641bccf7024eb95fc0f064be16a, type: 2}
