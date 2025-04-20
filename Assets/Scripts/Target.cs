@@ -48,6 +48,21 @@ public abstract class Target : NetworkBehaviour
     }
 
 
+    internal void moveTargetServer(int section)
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+        Terrain.terrain.moveImage(image, section);
+        moveTargetClientRPC(section);
+    }
+
+
+    [Rpc(SendTo.NotServer)]
+    internal void moveTargetClientRPC(int section)
+    {
+        Terrain.terrain.moveImage(image, section);
+    }
+
+
     /// <summary>
     /// Every target has a deck and will run through it. 
     /// 

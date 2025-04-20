@@ -110,6 +110,7 @@ public class Card : NetworkBehaviour
     /// [Server Only] Decompile the card's effect, in the order where, who, what. 
     /// 
     /// TODO: 
+    ///     Sync enemy movement across the network
     ///     Add Boost effects; 
     ///     after enemies implemented, add enemy to who; 
     ///     add extra action after implementing action limit
@@ -330,7 +331,7 @@ public class Card : NetworkBehaviour
                         int sect = Terrain.terrain.getMapSection(allTargetsOfCard[i].image.transform.position) + effect.amount;
                         NetworkHud.nh.print("Requesting move to section " + sect);
                         //((Player)allTargetsOfCard[i]).playerRequestMoveServerRPC(Terrain.terrain.getMapSection(allTargetsOfCard[i].image.transform.position) + effect.amount);
-                        Terrain.terrain.moveImage(allTargetsOfCard[i].image, sect);
+                        allTargetsOfCard[i].moveTargetServer(sect);
                     }
                 }
                 break;

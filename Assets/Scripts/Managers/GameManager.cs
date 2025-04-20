@@ -122,6 +122,7 @@ public class GameManager : NetworkBehaviour
     {
         timer.text = "";
         playerTurnCoroutine = null;
+        if (!NetworkManager.Singleton.IsServer) return;
         TargetLocator[] players = TargetLocator.getPlayers();
         for (int i = 0; i < players.Length; i++)
         {

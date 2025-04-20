@@ -48,6 +48,7 @@ public class Terrain : MonoBehaviour
     }
 
 
+    #region movement
     internal void moveImage(UnityEngine.UI.RawImage image, int section)
     {
         double angle = (2 * Mathf.PI) / Terrain.terrain.numSections;
@@ -57,8 +58,10 @@ public class Terrain : MonoBehaviour
         image.transform.position = Terrain.terrain.transform.position + Terrain.terrain.offSet + (position * Terrain.terrain.GetComponent<CircleCollider2D>().radius * 0.75f);
         TargetLocator.move(image.transform.parent.parent.GetComponent<Target>(), section);
     }
+    #endregion
 
 
+    #region get lists
     /// <summary>
     /// Return a list of players between the two sections
     /// </summary>
@@ -93,5 +96,6 @@ public class Terrain : MonoBehaviour
         }
         return targets;
     }
+    #endregion
 }
 

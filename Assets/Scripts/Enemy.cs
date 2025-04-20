@@ -9,11 +9,14 @@ public class Enemy : Target
 
     private void Awake()
     {
-        new TargetLocator(this);
-        GameManager.gm.enemyManager.enemyList.Add(this);
-        Terrain.terrain.moveImage(image, 4);
-        actions[0] = 1;
-        actions[1] = 1;
+        if (NetworkManager.Singleton.IsServer)
+        {
+            new TargetLocator(this);
+            GameManager.gm.enemyManager.enemyList.Add(this);
+            Terrain.terrain.moveImage(image, 4);
+            actions[0] = 1;
+            actions[1] = 1;
+        }
     }
 
     [Rpc(SendTo.Server)]
