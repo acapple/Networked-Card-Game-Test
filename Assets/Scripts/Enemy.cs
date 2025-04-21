@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -18,6 +19,37 @@ public class Enemy : Target
             actions[1] = 1;
         }
     }
+
+
+    #region update client enemy
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (IsServer) return;
+        NetworkHud.nh.print("Calling enemy update");
+        StartCoroutine(updateEnemyDelay());
+    }
+
+    internal IEnumerator updateEnemyDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        updateEnemyServerRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    internal void updateEnemyServerRpc()
+    {
+        int section = Terrain.terrain.getMapSection(image.transform.position);
+        updateEnemyClientRpc(section);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    internal void updateEnemyClientRpc(int section)
+    {
+        Terrain.terrain.moveImage(image, section);
+    }
+    #endregion update client enemy
+
 
     [Rpc(SendTo.Server)]
     internal override void RequestCardPlayedServerRPC(int cardNum, int section)

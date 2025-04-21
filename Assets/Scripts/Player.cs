@@ -44,8 +44,8 @@ public class Player : Target
 
             NetworkHud.localPlr = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();
         }
-        base.OnNetworkSpawn();
         StartCoroutine(gameSetup());
+        base.OnNetworkSpawn();
     }
 
 
@@ -56,12 +56,48 @@ public class Player : Target
     private IEnumerator gameSetup()
     {
         yield return new WaitForSeconds(0.5f);
-        playerRequestMoveServerRPC(0, true);
+        if (IsLocalPlayer)
+        {
+            playerRequestMoveServerRPC(0, true);
+        }
+        else playerRequestMoveServerRPC(-1, true);
         drawHandOfCards();
+        StartCoroutine(UpdatePlayerDelay());
         actions = new Vector2Int(0, GameManager.gm.numberOfActions);
     }
 
-    
+
+    internal IEnumerator UpdatePlayerDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        updatePlayerServerRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    internal void updatePlayerServerRpc()
+    {
+        int section = Terrain.terrain.getMapSection(image.transform.position);
+        string color = "#"+ColorUtility.ToHtmlStringRGB(image.color);
+        updatePlayerClientRpc(section, color);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    internal void updatePlayerClientRpc(int section, string color)
+    {
+        Color color2;
+        Terrain.terrain.moveImage(image, section);
+        
+        if (ColorUtility.TryParseHtmlString(color, out color2))
+        {
+            image.color = color2;
+        }
+        else
+        {
+            NetworkHud.nh.print("Invalid hex code: "+color, true);
+        }
+    }
+
+
 
     /// <summary>
     /// Initializes and adds this player to the server side dictionary of players in the game
@@ -132,6 +168,7 @@ public class Player : Target
     [Rpc(SendTo.Server)]
     public void playerRequestMoveServerRPC(int section, bool moveOverride = false)
     {
+        if (section == -1) section = Terrain.terrain.getMapSection(image.transform.position);
         if (GameManager.gm.State == GameManager.gameState.PlayersTurn || moveOverride)
         {
             NetworkHud.nh.print("Moving to section " + section);
