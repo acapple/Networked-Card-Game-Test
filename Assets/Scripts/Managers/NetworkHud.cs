@@ -22,7 +22,7 @@ public class NetworkHud : NetworkBehaviour
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10, 10, 200, 200));
-        if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
         {
             StartButtons();
         } else
@@ -48,9 +48,9 @@ public class NetworkHud : NetworkBehaviour
         goalIPAddress = GUILayout.TextField(goalIPAddress); 
         if (GUILayout.Button("Host"))
         {
-            NetworkManager.Singleton.StartHost();
-
-            GameManager.gm.enemyManager.spawnEnemies();
+            //NetworkManager.Singleton.StartHost();
+            GameNetworkManager.GMN.StartHost(6);
+            //GameManager.gm.enemyManager.spawnEnemies();
         }
         if (GUILayout.Button("Client"))
         {
