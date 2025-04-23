@@ -50,7 +50,7 @@ public class NetworkHud : NetworkBehaviour
         {
             //NetworkManager.Singleton.StartHost();
             GameNetworkManager.GMN.StartHost(6);
-            //GameManager.gm.enemyManager.spawnEnemies();
+            GameManager.gm.enemyManager.spawnEnemies();
         }
         if (GUILayout.Button("Client"))
         {

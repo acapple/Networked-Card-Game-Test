@@ -15,7 +15,7 @@ public class GameNetworkManager : MonoBehaviour
 
     private void Awake()
     {
-        if (GMN = null)
+        if (GMN == null)
         {
             GMN = this;
         }
