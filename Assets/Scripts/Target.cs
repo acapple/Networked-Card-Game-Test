@@ -65,8 +65,6 @@ public abstract class Target : NetworkBehaviour
 
     /// <summary>
     /// Every target has a deck and will run through it. 
-    /// 
-    /// TODO: Code this function for enemies
     /// </summary>
     /// <param name="cardNum"> idk... used for players </param>
     /// <param name="section"> section to play the card in </param>

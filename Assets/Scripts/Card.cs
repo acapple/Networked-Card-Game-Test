@@ -110,9 +110,7 @@ public class Card : NetworkBehaviour
     /// [Server Only] Decompile the card's effect, in the order where, who, what. 
     /// 
     /// TODO: 
-    ///     Sync enemy movement across the network
     ///     Add Boost effects; 
-    ///     after enemies implemented, add enemy to who; 
     ///     add extra action after implementing action limit
     ///     add missing cases as I think of them; 
     /// </summary>

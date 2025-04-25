@@ -160,8 +160,6 @@ public class Player : Target
 
     /// <summary>
     /// Player requests to move. 
-    /// 
-    /// TODO: Sync positioning in a new function
     /// </summary>
     /// <param name="section">Where to move to</param>
     /// <param name="moveOverride">ignore not being player's turn</param>

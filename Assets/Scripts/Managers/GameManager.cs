@@ -115,8 +115,6 @@ public class GameManager : NetworkBehaviour
 
     /// <summary>
     /// Function to deal with the end of the player's turn
-    /// 
-    /// TODO: for every action remaining, plus a variable int, every player draws a card
     /// </summary>
     internal void playerTurnOver()
     {
