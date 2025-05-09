@@ -150,7 +150,11 @@ public class NetworkHud : NetworkBehaviour
                 NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
                 if (playerObject != null)
                 {
-                    if (localPlr == null) localPlr = playerObject.GetComponent<Player>();
+                    if (localPlr == null)
+                    {
+                        localPlr = playerObject.GetComponent<Player>();
+                        localPlr.deck.showCardUI = true;
+                    }
                 }
             }
         }

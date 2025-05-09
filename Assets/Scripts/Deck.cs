@@ -14,7 +14,7 @@ public class Deck : NetworkBehaviour
     internal List<Card> discard;
     internal Dictionary<int, Card> cardsFromThisDeck;
     [SerializeField]
-    bool showCardUI = false;
+    internal bool showCardUI = false;
     
 
     [Header("References")]
@@ -179,6 +179,11 @@ public class Deck : NetworkBehaviour
             c.GetComponent<Image>().enabled = true;
             TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
             t.text = c.title;
+        } else
+        {
+            c.GetComponent<Image>().enabled = false;
+            TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
+            t.text = "";
         }
         cardsInDeck.RemoveAt(cardLocationInDeck);
         removeCardFromDeckClientRpc(cardLocationInDeck);
@@ -196,9 +201,18 @@ public class Deck : NetworkBehaviour
     {
         if (GameManager.gm.repetitiveMessages) NetworkHud.nh.print("Drawing a card");
         Card c = cardsInDeck[cardLocationInDeck];
-        c.GetComponent<Image>().enabled = true;
-        TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
-        t.text = c.title;
+        if (showCardUI)
+        {
+            c.GetComponent<Image>().enabled = true;
+            TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
+            t.text = c.title;
+        }
+        else
+        {
+            c.GetComponent<Image>().enabled = false;
+            TMP_Text t = c.transform.GetChild(0).GetComponent<TMP_Text>();
+            t.text = "";
+        }
         cardsInDeck.RemoveAt(cardLocationInDeck);
     }
     #endregion drawing a card

@@ -224,13 +224,14 @@ public class Player : Target
         }
 
         hand.Add(c);
-        hand[hand.Count-1].GetComponent<Image>().enabled = true;
-        c.transform.GetChild(0).gameObject.SetActive(true);
+        if (IsLocalPlayer) hand[hand.Count-1].GetComponent<Image>().enabled = true;
+        if (IsLocalPlayer) c.transform.GetChild(0).gameObject.SetActive(true);
         hand[hand.Count - 1].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
         for (int i=0; i<hand.Count; i++)
         {
             int x = (int) Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
-            hand[i].transform.position = new Vector3(x, 50, 0);
+            if (!IsLocalPlayer) hand[i].transform.position = new Vector3(x, -200, 0);
+            if (IsLocalPlayer) hand[i].transform.position = new Vector3(x, 50, 0);
         }
         addCardToHandClientRPC(c.keyInDeck);
         return;
@@ -247,13 +248,14 @@ public class Player : Target
         if (!IsLocalPlayer || !IsOwner) return;
         Card c = deck.cardsFromThisDeck[cardKey];
         hand.Add(c);
-        hand[hand.Count - 1].GetComponent<Image>().enabled = true;
-        c.transform.GetChild(0).gameObject.SetActive(true);
+        if (IsLocalPlayer) hand[hand.Count - 1].GetComponent<Image>().enabled = true;
+        if (IsLocalPlayer) c.transform.GetChild(0).gameObject.SetActive(true);
         hand[hand.Count - 1].GetComponent<Image>().color = new Color(Random.Range(0.0f, 1), Random.Range(0.0f, 1), Random.Range(0.0f, 1)); // Temporary
         for (int i = 0; i < hand.Count; i++)
         {
             int x = (int)Mathf.Floor(canvas.pixelRect.width * 0.5f + cardSpacing * i - 0.5f * cardSpacing * (hand.Count - 1));
-            hand[i].transform.position = new Vector3(x, 50, 0);
+            if (!IsLocalPlayer) hand[i].transform.position = new Vector3(x, -200, 0);
+            if (IsLocalPlayer) hand[i].transform.position = new Vector3(x, 50, 0);
         }
     }
 

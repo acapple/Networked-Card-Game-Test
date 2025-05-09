@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2108013558
+  GlobalObjectIdHash: 2082987232
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardsInDeck: []
-  showCardUI: 1
+  showCardUI: 0
   startingDeck: {fileID: 11400000, guid: b0348aba91d1e7541b9dce77cfa50c75, type: 2}
   cardUISample: {fileID: 5821028111029674866, guid: 9d494377423913e4b8e2006f329c2c17, type: 3}
   canvas: {fileID: 8434222694888808820}
