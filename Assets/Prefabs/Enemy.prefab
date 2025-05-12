@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4945143291060402750
 RectTransform:
   m_ObjectHideFlags: 0
@@ -420,6 +420,7 @@ MonoBehaviour:
   defaultHealth: 20
   deck: {fileID: 143510634077122854}
   image: {fileID: 1684432737051510976}
+  healthSlider: {fileID: 5311924900656084778}
 --- !u!1 &6120952396948172456
 GameObject:
   m_ObjectHideFlags: 0

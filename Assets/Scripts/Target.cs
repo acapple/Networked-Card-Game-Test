@@ -16,6 +16,8 @@ public abstract class Target : NetworkBehaviour
     internal Deck deck;
     [SerializeField]
     internal UnityEngine.UI.RawImage image;
+    [SerializeField]
+    internal UnityEngine.UI.Slider healthSlider;
 
 
     /// <summary>
@@ -25,10 +27,9 @@ public abstract class Target : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         NetworkHud.nh.print("A target is spawned!");
-        if (IsLocalPlayer)
-        {
-            health.OnValueChanged += HealthChanged;
-        }
+        health.OnValueChanged += HealthChanged;
+        healthSlider.minValue = 0;
+        healthSlider.maxValue = defaultHealth;
         if (IsServer)
         {
             health.Value = defaultHealth;
@@ -44,7 +45,8 @@ public abstract class Target : NetworkBehaviour
     public void HealthChanged(float previous, float current)
     {
         NetworkHud.nh.print("Health went from " + previous + " to " + current);
-        defaultHealth = (int)health.Value;
+        //defaultHealth = (int)health.Value;
+        healthSlider.value = health.Value;
     }
 
 
